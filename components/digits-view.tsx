@@ -14,8 +14,7 @@ import { ConfigurableDigitsControls } from './configurable-digits-controls';
 import { TradeTypeChips } from '@/components/custom/trade-type-chips';
 import { SymbolSelector } from '@/components/custom/symbol-selector';
 import { ThemeToggle } from '@/components/custom/theme-toggle';
-import { AIIntelligence } from '@/components/custom/ai-intelligence';
-import { SignalDisplay } from '@/components/custom/signal-display';
+import { AISignal } from '@/components/custom/ai-intelligence';
 import { LiveDigitStream } from '@/components/custom/live-digit-stream';
 import { TransitionMatrix } from '@/components/custom/transition-matrix';
 import type {
@@ -304,22 +303,6 @@ export function DigitsView({
 
               {/* Premium Grid Layout */}
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-                {/* AI Intelligence */}
-                <AIIntelligence isConnected={isConnected} />
-
-                {/* Live Digit Stream */}
-                <LiveDigitStream 
-                  currentTick={currentTick}
-                  lastDigit={lastDigit}
-                />
-
-                {/* Signal Display */}
-                <SignalDisplay 
-                  tradeType={tradeType}
-                  contractMode={contractMode}
-                  selectedDigit={selectedDigit}
-                />
-
                 {/* Market Selector */}
                 <Card className="astral-glass border-glow-cyan p-5">
                   <div className="flex items-center gap-3 mb-4">
@@ -336,6 +319,14 @@ export function DigitsView({
                     onSymbolChange={selectSymbol}
                   />
                 </Card>
+
+                {/* Live Digit Stream - Merged with Current Tick */}
+                <LiveDigitStream 
+                  currentTick={currentTick}
+                  lastDigit={lastDigit}
+                  activeSymbol={activeSymbol}
+                  pipSize={pipSize}
+                />
 
                 {/* Digit Distribution */}
                 <Card className="astral-glass border-glow-green p-5 md:col-span-2">
@@ -354,60 +345,45 @@ export function DigitsView({
                   />
                 </Card>
 
+                {/* AI Signal Card */}
+                <AISignal selectedDigit={selectedDigit} isConnected={isConnected} />
+
                 {/* Transition Matrix */}
                 <TransitionMatrix digitStats={digitStats} />
 
-                {/* Current Tick Display */}
-                <Card className="astral-glass border-glow-purple p-5">
-                  <div className="flex items-center gap-3 mb-4">
-                    <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-neon-purple to-neon-pink flex items-center justify-center text-white font-bold text-sm glow-purple">
-                      📊
+                {/* Trading Controls - Full Width - Only show when authenticated */}
+                {authState === 'authenticated' && (
+                  <Card className="astral-glass border-glow-green p-5 lg:col-span-2">
+                    <div className="flex items-center gap-3 mb-4">
+                      <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-neon-green to-neon-cyan flex items-center justify-center text-white font-bold text-sm glow-green">
+                        ⚡
+                      </div>
+                      <h3 className="text-sm font-bold uppercase tracking-wider text-foreground">
+                        Trading Controls
+                      </h3>
                     </div>
-                    <h3 className="text-sm font-bold uppercase tracking-wider text-foreground">
-                      Current Tick
-                    </h3>
-                  </div>
-                  <div className="flex items-center justify-center min-h-24">
-                    <CurrentTickDisplay
-                      tick={currentTick}
-                      lastDigit={lastDigit}
-                      activeSymbol={activeSymbol}
-                      pipSize={pipSize}
+                    <TradeControls
+                      tradeType={tradeType}
+                      contractMode={contractMode}
+                      onContractModeChange={setContractMode}
+                      selectedDigit={selectedDigit}
+                      isConnected={isConnected}
+                      stake={stake}
+                      onStakeChange={setStake}
+                      duration={duration}
+                      onDurationChange={setDuration}
+                      durationLimits={durationLimits}
+                      proposal={proposal}
+                      isProposalLoading={isProposalLoading}
+                      onBuy={buyContract}
+                      isBuying={isBuying}
+                      buyResult={buyResult}
+                      buyError={buyError}
+                      onClearBuyResult={clearBuyResult}
+                      isAuthenticated={authState === 'authenticated'}
                     />
-                  </div>
-                </Card>
-
-                {/* Trading Controls - Full Width */}
-                <Card className="astral-glass border-glow-green p-5 lg:col-span-2">
-                  <div className="flex items-center gap-3 mb-4">
-                    <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-neon-green to-neon-cyan flex items-center justify-center text-white font-bold text-sm glow-green">
-                      ⚡
-                    </div>
-                    <h3 className="text-sm font-bold uppercase tracking-wider text-foreground">
-                      Trading Controls
-                    </h3>
-                  </div>
-                  <TradeControls
-                    tradeType={tradeType}
-                    contractMode={contractMode}
-                    onContractModeChange={setContractMode}
-                    selectedDigit={selectedDigit}
-                    isConnected={isConnected}
-                    stake={stake}
-                    onStakeChange={setStake}
-                    duration={duration}
-                    onDurationChange={setDuration}
-                    durationLimits={durationLimits}
-                    proposal={proposal}
-                    isProposalLoading={isProposalLoading}
-                    onBuy={buyContract}
-                    isBuying={isBuying}
-                    buyResult={buyResult}
-                    buyError={buyError}
-                    onClearBuyResult={clearBuyResult}
-                    isAuthenticated={authState === 'authenticated'}
-                  />
-                </Card>
+                  </Card>
+                )}
               </div>
             </>
           )}

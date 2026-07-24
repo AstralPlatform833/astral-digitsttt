@@ -200,8 +200,8 @@ export function TradeControls({
         )}
       </div>
 
-      {/* Buy button — fixed above footer on mobile, inline on desktop */}
-      <div className="max-lg:fixed max-lg:bottom-[calc(env(safe-area-inset-bottom)+2.5rem)] max-lg:left-3 max-lg:right-3 lg:static">
+      {/* Buy button — inline in dashboard layout */}
+      <div>
         <Button
           className="w-full h-11 rounded-xl px-6 sm:h-12 sm:px-8 bg-gradient-to-r from-neon-green to-neon-cyan hover:from-neon-green/80 hover:to-neon-cyan/80 border-0 text-black font-bold btn-premium"
           disabled={!isConnected || !proposal || isBuying}

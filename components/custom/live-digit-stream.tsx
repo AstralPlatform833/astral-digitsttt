@@ -2,10 +2,13 @@
 
 import { Card } from '@/components/ui/card';
 import type { Tick } from '@deriv/core';
+import type { ActiveSymbol } from '@deriv/core';
 
 interface LiveDigitStreamProps {
   currentTick: Tick | null;
   lastDigit: number | null;
+  activeSymbol: ActiveSymbol | null;
+  pipSize: number;
   tickHistory?: number[];
 }
 
@@ -45,10 +48,17 @@ const GLOW_COLORS = [
   'glow-green',
 ];
 
-export function LiveDigitStream({ currentTick, lastDigit, tickHistory = [] }: LiveDigitStreamProps) {
+export function LiveDigitStream({ currentTick, lastDigit, activeSymbol, pipSize, tickHistory = [] }: LiveDigitStreamProps) {
   // Generate 15 digits for display (last digit + history + placeholders)
   const displayDigits = [...tickHistory.slice(-14), lastDigit ?? 0].slice(-15);
   
+  // Format current tick price
+  const formatPrice = (price: number) => {
+    if (!activeSymbol) return price.toFixed(2);
+    const decimals = pipSize === 0.01 ? 2 : pipSize === 0.001 ? 3 : pipSize === 0.0001 ? 4 : 2;
+    return price.toFixed(decimals);
+  };
+
   return (
     <Card className="astral-glass border-glow-cyan p-5">
       <div className="flex items-center gap-3 mb-4">
@@ -60,6 +70,16 @@ export function LiveDigitStream({ currentTick, lastDigit, tickHistory = [] }: Li
         </h3>
       </div>
 
+      {/* Current Tick Display */}
+      {currentTick && (
+        <div className="mb-4 bg-black/30 rounded-lg p-3 border border-white/10">
+          <p className="text-[10px] text-muted-foreground uppercase tracking-wider mb-1">Latest Tick</p>
+          <p className="text-lg font-mono font-bold text-neon-cyan">
+            {formatPrice(currentTick.quote)}
+          </p>
+        </div>
+      )}
+
       <div className="flex gap-2 overflow-x-auto pb-2">
         {displayDigits.map((digit, index) => {
           const colorClass = NEON_COLORS[index % NEON_COLORS.length];
@@ -70,10 +90,10 @@ export function LiveDigitStream({ currentTick, lastDigit, tickHistory = [] }: Li
             <div
               key={`${digit}-${index}`}
               className={`
-                digit-ball flex-shrink-0 w-12 h-12 rounded-full 
+                digit-ball flex-shrink-0 w-10 h-10 rounded-full 
                 ${colorClass} ${glowClass}
                 flex items-center justify-center 
-                text-white font-bold text-lg
+                text-white font-bold text-sm
                 ${isLatest ? 'scale-110 ring-2 ring-white/50' : ''}
               `}
               style={{
@@ -86,15 +106,7 @@ export function LiveDigitStream({ currentTick, lastDigit, tickHistory = [] }: Li
         })}
       </div>
 
-      {/* Current Price Display */}
-      {currentTick && (
-        <div className="mt-4 bg-black/30 rounded-lg p-3 border border-white/10">
-          <p className="text-xs text-muted-foreground uppercase tracking-wider mb-1">Current Price</p>
-          <p className="text-xl font-mono font-bold text-neon-cyan">
-            {currentTick.quote.toFixed(2)}
-          </p>
-        </div>
-      )}
+      <p className="text-[10px] text-muted-foreground mt-2 text-center">Last 15 digits</p>
     </Card>
   );
 }
