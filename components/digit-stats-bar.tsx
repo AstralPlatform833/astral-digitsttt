@@ -8,12 +8,14 @@ interface DigitStatsBarProps {
   digitStats: DigitStats;
   selectedDigit: number;
   onDigitSelect: (digit: number) => void;
+  lastDigit?: number | null;
 }
 
 export function DigitStatsBar({
   digitStats,
   selectedDigit,
   onDigitSelect,
+  lastDigit,
 }: DigitStatsBarProps) {
   const maxPct = Math.max(...digitStats.percentages);
   const minPct = Math.min(...digitStats.percentages);
@@ -29,6 +31,7 @@ export function DigitStatsBar({
           const isSelected = digit === selectedDigit;
           const isHighest = digitStats.totalTicks > 0 && pct === maxPct;
           const isLowest = digitStats.totalTicks > 0 && pct === minPct;
+          const isLastDigit = lastDigit !== null && digit === lastDigit;
 
           return (
             <div key={digit} className="flex flex-col items-center gap-1.5 sm:gap-2">
@@ -38,7 +41,8 @@ export function DigitStatsBar({
                 className={cn(
                   'w-11 h-11 sm:w-14 sm:h-14 text-base sm:text-xl font-semibold rounded-xl p-0 astral-transition',
                   !isSelected && 'bg-white/5 border-white/10 hover:bg-neon-cyan/20 hover:border-neon-cyan/50',
-                  isSelected && 'bg-gradient-to-br from-neon-cyan to-neon-green border-0 text-black glow-cyan'
+                  isSelected && 'bg-gradient-to-br from-neon-cyan to-neon-green border-0 text-black glow-cyan',
+                  isLastDigit && !isSelected && 'ring-2 ring-neon-purple ring-offset-2 ring-offset-black'
                 )}
               >
                 {digit}
@@ -48,7 +52,8 @@ export function DigitStatsBar({
                   'text-xs font-mono',
                   isHighest && 'text-neon-green font-semibold',
                   isLowest && 'text-neon-pink font-semibold',
-                  !isHighest && !isLowest && 'text-muted-foreground'
+                  !isHighest && !isLowest && 'text-muted-foreground',
+                  isLastDigit && 'text-neon-purple font-bold'
                 )}
               >
                 {pct.toFixed(1)}%

@@ -38,6 +38,7 @@ interface UseDigitsTradingReturn {
   setSelectedDigit: (digit: number) => void;
   contractsAvailable: boolean;
   pipSize: number;
+  prices: number[];
   stake: string;
   setStake: (value: string) => void;
   duration: number;
@@ -178,6 +179,7 @@ export function useDigitsTrading({ ws, isConnected, isExhausted, isAuthenticated
     setSelectedDigit,
     contractsAvailable,
     pipSize,
+    prices,
     stake,
     setStake,
     duration,

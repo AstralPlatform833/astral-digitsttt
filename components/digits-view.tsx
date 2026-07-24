@@ -17,6 +17,7 @@ import { ThemeToggle } from '@/components/custom/theme-toggle';
 import { AISignal } from '@/components/custom/ai-intelligence';
 import { LiveDigitStream } from '@/components/custom/live-digit-stream';
 import { TransitionMatrix } from '@/components/custom/transition-matrix';
+import { TradeStatus } from '@/components/custom/trade-status';
 import type {
   AuthState,
   DerivAccount,
@@ -26,7 +27,7 @@ import type {
   DurationLimits,
   BuyResult,
 } from '@deriv/core';
-import type { ContractMode, TradeType, DigitStats } from '../lib/types';
+import type { ContractMode, TradeType, DigitStats, ClosedPosition } from '../lib/types';
 import type { DigitsAppConfig } from '../lib/app-config';
 
 const DIGIT_TRADE_TYPE_OPTIONS: { value: TradeType; label: string }[] = [
@@ -58,6 +59,7 @@ export interface DigitsViewProps {
   lastDigit: number | null;
   digitStats: DigitStats;
   pipSize: number;
+  prices: number[];
 
   // Trade controls
   tradeType: TradeType;
@@ -78,6 +80,7 @@ export interface DigitsViewProps {
   buyResult: BuyResult | null;
   buyError: string | null;
   clearBuyResult: () => void;
+  closedPositions: ClosedPosition[];
   // Branding (used by preview route; no-op in the real app)
   logoSrc?: string;
   appName?: string;
@@ -118,6 +121,7 @@ export function DigitsView({
   lastDigit,
   digitStats,
   pipSize,
+  prices,
   tradeType,
   setTradeType,
   contractMode,
@@ -136,6 +140,7 @@ export function DigitsView({
   buyResult,
   buyError,
   clearBuyResult,
+  closedPositions,
   logoSrc,
   appName,
   appConfig,
@@ -326,6 +331,7 @@ export function DigitsView({
                   lastDigit={lastDigit}
                   activeSymbol={activeSymbol}
                   pipSize={pipSize}
+                  prices={prices}
                 />
 
                 {/* Digit Distribution */}
@@ -342,14 +348,20 @@ export function DigitsView({
                     digitStats={digitStats}
                     selectedDigit={selectedDigit}
                     onDigitSelect={setSelectedDigit}
+                    lastDigit={lastDigit}
                   />
                 </Card>
 
                 {/* AI Signal Card */}
                 <AISignal selectedDigit={selectedDigit} isConnected={isConnected} />
 
-                {/* Transition Matrix */}
-                <TransitionMatrix digitStats={digitStats} />
+                {/* Trade Status - Only show when authenticated */}
+                {authState === 'authenticated' && (
+                  <TradeStatus
+                    closedPositions={closedPositions}
+                    isBuying={isBuying}
+                  />
+                )}
 
                 {/* Trading Controls - Full Width - Only show when authenticated */}
                 {authState === 'authenticated' && (
@@ -384,6 +396,9 @@ export function DigitsView({
                     />
                   </Card>
                 )}
+
+                {/* Transition Matrix - Always last */}
+                <TransitionMatrix digitStats={digitStats} />
               </div>
             </>
           )}

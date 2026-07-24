@@ -67,6 +67,7 @@ export function LiveDigits({
       lastDigit={trading.lastDigit}
       digitStats={trading.digitStats}
       pipSize={trading.pipSize}
+      prices={trading.prices}
       tradeType={trading.tradeType}
       setTradeType={trading.setTradeType}
       contractMode={trading.contractMode}
@@ -85,6 +86,7 @@ export function LiveDigits({
       buyResult={trading.buyResult}
       buyError={trading.buyError}
       clearBuyResult={trading.clearBuyResult}
+      closedPositions={trading.closedPositions}
       appConfig={appConfig}
       editMode={editMode}
       onSelect={onSelect}

@@ -3,13 +3,14 @@
 import { Card } from '@/components/ui/card';
 import type { Tick } from '@deriv/core';
 import type { ActiveSymbol } from '@deriv/core';
+import { getLastDigit } from '@/lib/digit-stats';
 
 interface LiveDigitStreamProps {
   currentTick: Tick | null;
   lastDigit: number | null;
   activeSymbol: ActiveSymbol | null;
   pipSize: number;
-  tickHistory?: number[];
+  prices: number[];
 }
 
 const NEON_COLORS = [
@@ -48,10 +49,14 @@ const GLOW_COLORS = [
   'glow-green',
 ];
 
-export function LiveDigitStream({ currentTick, lastDigit, activeSymbol, pipSize, tickHistory = [] }: LiveDigitStreamProps) {
-  // Generate 15 digits for display (last digit + history + placeholders)
-  const displayDigits = [...tickHistory.slice(-14), lastDigit ?? 0].slice(-15);
-  
+export function LiveDigitStream({ currentTick, lastDigit, activeSymbol, pipSize, prices = [] }: LiveDigitStreamProps) {
+  // Extract last 15 digits from prices history
+  const digitHistory = prices.slice(-15).map(price => getLastDigit(price, pipSize));
+  // Add current last digit if not already in history
+  const displayDigits = lastDigit !== null
+    ? [...digitHistory.slice(-14), lastDigit]
+    : digitHistory.slice(-15);
+
   // Format current tick price
   const formatPrice = (price: number) => {
     if (!activeSymbol) return price.toFixed(2);
