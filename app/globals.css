@@ -1,0 +1,152 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --radius: 0.75rem;
+    
+    /* Astral Neon Theme - Dark Mode Default */
+    --primary: 0 255 255;
+    --accent: 255 0 255;
+    --background: 0 0 0;
+    --border: 255 255 255 / 0.1;
+    --card: 20 20 30 / 0.6;
+    --card-foreground: 255 255 255;
+    --destructive: 255 0 85 / 0.8;
+    --destructive-foreground: 255 255 255;
+    --accent-foreground: 255 255 255;
+    --foreground: 255 255 255;
+    --input: 255 255 255 / 0.1;
+    --muted: 30 30 40 / 0.8;
+    --popover: 20 20 30 / 0.95;
+    --popover-foreground: 255 255 255;
+    --primary-foreground: 0 0 0;
+    --ring: 0 255 255 / 0.5;
+    --secondary: 255 0 255;
+    --secondary-foreground: 255 255 255;
+    --muted-foreground: 163 163 163;
+    --chart-1: 255 0 255;
+    --chart-2: 0 255 255;
+    --chart-3: 0 255 136;
+    --chart-4: 191 0 255;
+    --chart-5: 255 100 100;
+    --buy-background: 0 255 136;
+    --buy-foreground: 0 0 0;
+    --sell-background: 255 0 85;
+    --sell-foreground: 255 255 255;
+    --button-black: 0 0 0;
+    --button-black-foreground: 255 255 255;
+    --button-white: 255 255 255;
+    --button-white-foreground: 0 0 0;
+    --alpha-10: 0 0 0 / 0.9;
+    --alpha-20: 0 0 0 / 0.8;
+    --alpha-30: 0 0 0 / 0.7;
+    --alpha-40: 0 0 0 / 0.6;
+    --alpha-50: 0 0 0 / 0.5;
+    --alpha-60: 0 0 0 / 0.4;
+    --alpha-70: 0 0 0 / 0.3;
+    --alpha-80: 0 0 0 / 0.2;
+    --alpha-90: 0 0 0 / 0.1;
+    --ring-offset: 0 0 0;
+    --alpha-5: 0 0 0 / 0.95;
+    --outline: 255 255 255 / 0.2;
+    --dark:input: 255 255 255 / 0.1;
+    --destructive-20: 255 0 85 / 0.2;
+    --destructive-40: 255 0 85 / 0.4;
+    --outline-10: 255 255 255 / 0.1;
+    --blue-500: 0 255 255;
+    --buy-20: 0 255 136 / 0.2;
+    --sell-20: 255 0 85 / 0.2;
+    --section-message: 0 255 255 / 0.15;
+    --border-focus: 0 255 255;
+    --border-focus-destructive: 255 0 85;
+    --button-blackwhite: 0 0 0;
+    --button-blackwhite-foreground: 255 255 255;
+    --checkmark-foreground: 0 0 0;
+    --checkmark: 255 255 255;
+    
+    /* Neon accent colors */
+    --neon-pink: 255 0 255;
+    --neon-cyan: 0 255 255;
+    --neon-green: 0 255 136;
+    --neon-purple: 191 0 255;
+    --glass-bg: 20 20 30 / 0.6;
+    --glass-border: 255 255 255 / 0.1;
+  }
+
+  .dark {
+    /* Dark mode - same as root for Astral theme */
+    --primary: 0 255 255;
+    --accent-foreground: 255 255 255;
+    --background: 0 0 0;
+    --border: 255 255 255 / 0.1;
+    --card: 20 20 30 / 0.6;
+    --accent: 255 0 255;
+    --card-foreground: 255 255 255;
+    --destructive: 255 0 85 / 0.8;
+    --destructive-foreground: 255 255 255;
+    --foreground: 255 255 255;
+    --input: 255 255 255 / 0.1;
+    --muted: 30 30 40 / 0.8;
+    --popover: 20 20 30 / 0.95;
+    --popover-foreground: 255 255 255;
+    --primary-foreground: 0 0 0;
+    --ring: 0 255 255 / 0.5;
+    --secondary: 255 0 255;
+    --secondary-foreground: 255 255 255;
+    --muted-foreground: 163 163 163;
+    --chart-1: 255 0 255;
+    --chart-2: 0 255 255;
+    --chart-3: 0 255 136;
+    --chart-4: 191 0 255;
+    --chart-5: 255 100 100;
+    --button-black: 0 0 0;
+    --button-black-foreground: 255 255 255;
+    --button-white: 255 255 255;
+    --button-white-foreground: 0 0 0;
+    --alpha-10: 0 0 0 / 0.9;
+    --alpha-20: 0 0 0 / 0.8;
+    --alpha-30: 0 0 0 / 0.7;
+    --alpha-40: 0 0 0 / 0.6;
+    --alpha-50: 0 0 0 / 0.5;
+    --alpha-60: 0 0 0 / 0.4;
+    --alpha-70: 0 0 0 / 0.3;
+    --alpha-80: 0 0 0 / 0.2;
+    --alpha-90: 0 0 0 / 0.1;
+    --ring-offset: 0 0 0;
+    --alpha-5: 0 0 0 / 0.95;
+    --outline: 255 255 255 / 0.2;
+    --dark:input: 255 255 255 / 0.1;
+    --destructive-20: 255 0 85 / 0.2;
+    --destructive-40: 255 0 85 / 0.4;
+    --outline-10: 255 255 255 / 0.1;
+    --blue-500: 0 255 255;
+    --buy-20: 0 255 136 / 0.2;
+    --sell-20: 255 0 85 / 0.2;
+    --section-message: 0 255 255 / 0.15;
+    --border-focus: 0 255 255;
+    --border-focus-destructive: 255 0 85;
+    --button-blackwhite: 0 0 0;
+    --button-blackwhite-foreground: 255 255 255;
+    --checkmark-foreground: 0 0 0;
+    --checkmark: 255 255 255;
+    
+    /* Neon accent colors */
+    --neon-pink: 255 0 255;
+    --neon-cyan: 0 255 255;
+    --neon-green: 0 255 136;
+    --neon-purple: 191 0 255;
+    --glass-bg: 20 20 30 / 0.6;
+    --glass-border: 255 255 255 / 0.1;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+}
