@@ -64,7 +64,7 @@ export function Header({
   const isAuthenticating = authState === 'authenticating';
 
   return (
-    <header className="fixed top-0 left-0 right-0 z-50 flex items-center justify-between px-4 py-3 border-b border-glass-border bg-black/80 backdrop-blur-xl astral-glass">
+    <header className="fixed top-0 left-0 right-0 z-50 flex items-center justify-between px-4 h-16 border-b border-glass-border bg-black/80 backdrop-blur-xl astral-glass">
       <div className="flex items-center gap-3">
         {!logoSrc || logoError ? (
           <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-neon-pink to-neon-purple flex items-center justify-center text-white font-bold text-lg glow-pink">

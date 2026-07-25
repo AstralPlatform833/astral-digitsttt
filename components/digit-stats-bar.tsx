@@ -22,7 +22,7 @@ export function DigitStatsBar({
 
   return (
     <div className="flex items-center min-h-0">
-      <div className="grid grid-cols-5 gap-2 sm:gap-3 place-items-center w-full">
+      <div className="grid grid-cols-5 sm:grid-cols-10 gap-2 sm:gap-3 place-items-center w-full">
         {digitStats.percentages.map((pct, digit) => {
           const isSelected = digit === selectedDigit;
           const isHighest = digitStats.totalTicks > 0 && pct === maxPct;
@@ -30,12 +30,12 @@ export function DigitStatsBar({
           const isLastDigit = lastDigit !== null && digit === lastDigit;
 
           return (
-            <div key={digit} className="flex flex-col items-center gap-1">
+            <div key={digit} className="flex flex-col items-center gap-1.5">
               <Button
                 variant={isSelected ? 'default' : 'outline'}
                 onClick={() => onDigitSelect(digit)}
                 className={cn(
-                  'w-9 h-9 sm:w-11 sm:h-11 text-sm sm:text-base font-semibold rounded-lg p-0 astral-transition',
+                  'w-10 h-10 sm:w-12 sm:h-12 text-sm sm:text-base font-semibold rounded-lg p-0 astral-transition',
                   !isSelected && 'bg-white/5 border-white/10 hover:bg-neon-cyan/20 hover:border-neon-cyan/50',
                   isSelected && 'bg-gradient-to-br from-neon-cyan to-neon-green border-0 text-black glow-cyan',
                   isLastDigit && !isSelected && 'ring-2 ring-neon-purple ring-offset-2 ring-offset-black'

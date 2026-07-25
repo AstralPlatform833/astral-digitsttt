@@ -9,8 +9,8 @@ interface AISignalProps {
 
 export function AISignal({ selectedDigit = 0, isConnected = false }: AISignalProps) {
   return (
-    <Card className="astral-glass border-glow-purple p-3 md:col-span-4">
-      <div className="flex items-center gap-2 mb-2">
+    <Card className="astral-glass border-glow-purple p-4 md:col-span-4 rounded-xl">
+      <div className="flex items-center gap-2 mb-3">
         <div className="w-5 h-5 rounded bg-gradient-to-br from-neon-purple to-neon-pink flex items-center justify-center text-white font-bold text-xs glow-purple">
           🧠
         </div>
@@ -23,7 +23,7 @@ export function AISignal({ selectedDigit = 0, isConnected = false }: AISignalPro
         {/* Prediction */}
         <div className="flex items-center justify-between">
           <p className="text-[10px] text-muted-foreground uppercase tracking-wider">Prediction</p>
-          <p className="text-sm font-bold text-neon-purple">
+          <p className="text-lg font-bold text-neon-purple">
             {selectedDigit}
           </p>
         </div>
@@ -31,7 +31,7 @@ export function AISignal({ selectedDigit = 0, isConnected = false }: AISignalPro
         {/* Confidence */}
         <div className="flex items-center justify-between">
           <p className="text-[10px] text-muted-foreground uppercase tracking-wider">Confidence</p>
-          <p className="text-xs font-bold text-neon-cyan">
+          <p className="text-sm font-bold text-neon-cyan">
             {isConnected ? '82%' : '--'}
           </p>
         </div>

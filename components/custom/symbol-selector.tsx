@@ -97,8 +97,7 @@ export function SymbolSelector({
       {/* The direct child is a <div> (not a <span>) so the trigger's
           `[&>span]:line-clamp-1` rule can't collapse the stacked layout. */}
       <SelectTrigger className={cn(
-        'w-full astral-glass border-neon-cyan/30 hover:border-neon-cyan/50 transition-all astral-transition',
-        movement ? 'h-auto py-2' : undefined
+        'w-full h-11 astral-glass border-neon-cyan/30 hover:border-neon-cyan/50 transition-all astral-transition'
       )}>
         <div className="flex min-w-0 flex-col items-start gap-1 text-left">
           <SelectValue placeholder="Select a symbol" className="text-foreground font-semibold" />

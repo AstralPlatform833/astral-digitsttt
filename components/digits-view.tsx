@@ -300,7 +300,7 @@ export function DigitsView({
         )
       ) : (
         /* Premium Astral layout: responsive grid with new components */
-        <div className="flex w-full max-w-7xl mx-auto flex-col px-3 py-2 sm:px-4 sm:py-4 gap-4 lg:flex-none lg:overflow-visible pb-10">
+        <div className="flex w-full max-w-[1440px] mx-auto flex-col px-4 py-4 gap-4 lg:flex-none lg:overflow-visible pb-10">
           {isLoading ? (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
               <Skeleton className="h-64 rounded-xl" />
@@ -320,10 +320,10 @@ export function DigitsView({
               </div>
 
               {/* Premium Grid Layout - Compact Terminal */}
-              <div className="grid grid-cols-1 md:grid-cols-12 gap-3">
+              <div className="grid grid-cols-1 md:grid-cols-12 gap-4">
                 {/* Row 1: Market Selector + Live Digit Stream */}
-                <Card className="astral-glass border-glow-cyan p-3 md:col-span-4">
-                  <div className="flex items-center gap-2 mb-2">
+                <Card className="astral-glass border-glow-cyan p-4 md:col-span-4 rounded-xl">
+                  <div className="flex items-center gap-2 mb-3">
                     <div className="w-6 h-6 rounded bg-gradient-to-br from-neon-cyan to-neon-green flex items-center justify-center text-white font-bold text-xs glow-cyan">
                       💹
                     </div>
@@ -347,8 +347,8 @@ export function DigitsView({
                 />
 
                 {/* Row 2: Digit Distribution + Astral Signal */}
-                <Card className="astral-glass border-glow-green p-3 md:col-span-8">
-                  <div className="flex items-center gap-2 mb-2">
+                <Card className="astral-glass border-glow-green p-4 md:col-span-8 rounded-xl">
+                  <div className="flex items-center gap-2 mb-3">
                     <div className="w-6 h-6 rounded bg-gradient-to-br from-neon-green to-neon-cyan flex items-center justify-center text-white font-bold text-xs glow-green">
                       📈
                     </div>
@@ -368,7 +368,7 @@ export function DigitsView({
 
                 {/* Row 3: Trading Controls - Full Width */}
                 {authState === 'authenticated' && (
-                  <Card className="astral-glass border-glow-green p-4 md:col-span-12">
+                  <Card className="astral-glass border-glow-green p-4 md:col-span-12 rounded-xl">
                     <div className="flex items-center gap-2 mb-3">
                       <div className="w-6 h-6 rounded bg-gradient-to-br from-neon-green to-neon-cyan flex items-center justify-center text-white font-bold text-xs glow-green">
                         ⚡

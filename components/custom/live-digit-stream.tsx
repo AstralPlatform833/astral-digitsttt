@@ -65,19 +65,19 @@ export function LiveDigitStream({ currentTick, lastDigit, activeSymbol, pipSize,
   };
 
   return (
-    <Card className="astral-glass border-glow-cyan p-3 md:col-span-8">
+    <Card className="astral-glass border-glow-cyan p-4 md:col-span-8 rounded-xl">
       {/* Current Tick Display */}
       {currentTick && (
         <div className="mb-3 bg-black/30 rounded-lg p-2 border border-white/10">
-          <p className="text-[10px] text-muted-foreground uppercase tracking-wider mb-1">Latest Tick</p>
-          <p className="text-base font-mono font-bold text-neon-cyan">
+          <p className="text-[11px] text-muted-foreground uppercase tracking-wider mb-1">Latest Tick</p>
+          <p className="text-xl font-mono font-bold text-neon-cyan">
             {formatPrice(currentTick.quote)}
           </p>
         </div>
       )}
 
-      {/* Digit Stream - No horizontal scroll, wraps naturally */}
-      <div className="flex flex-wrap gap-1.5 justify-center">
+      {/* Digit Stream - Single row on desktop, 2-row wrap on mobile */}
+      <div className="flex flex-wrap gap-2 justify-center">
         {displayDigits.map((digit, index) => {
           const colorClass = NEON_COLORS[index % NEON_COLORS.length];
           const glowClass = GLOW_COLORS[index % GLOW_COLORS.length];
@@ -87,10 +87,10 @@ export function LiveDigitStream({ currentTick, lastDigit, activeSymbol, pipSize,
             <div
               key={`${digit}-${index}`}
               className={`
-                digit-ball w-7 h-7 sm:w-8 sm:h-8 rounded-full
+                digit-ball w-8 h-8 sm:w-8 sm:h-8 rounded-full
                 ${colorClass} ${glowClass}
                 flex items-center justify-center
-                text-white font-bold text-xs sm:text-sm
+                text-white font-bold text-sm
                 transition-all duration-300
                 ${isLatest ? 'scale-110 ring-2 ring-white/50 shadow-lg shadow-white/20' : 'opacity-80'}
               `}
