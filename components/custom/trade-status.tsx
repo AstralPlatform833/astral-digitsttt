@@ -1,17 +1,18 @@
 'use client';
 
 import { Card } from '@/components/ui/card';
-import type { ClosedPosition } from '@/lib/types';
+import type { OpenPosition } from '@/hooks/use-open-positions';
 
 interface TradeStatusProps {
-  closedPositions: ClosedPosition[];
+  openPositions: OpenPosition[];
   isBuying: boolean;
 }
 
-export function TradeStatus({ closedPositions, isBuying }: TradeStatusProps) {
-  const lastTrade = closedPositions[closedPositions.length - 1];
+export function TradeStatus({ openPositions, isBuying }: TradeStatusProps) {
+  // Get the most recent open position (running contract)
+  const runningContract = openPositions[openPositions.length - 1];
 
-  if (isBuying) {
+  if (isBuying || (runningContract && runningContract.status === 'open' && !runningContract.is_sold && !runningContract.is_expired)) {
     return (
       <Card className="astral-glass border-glow-yellow p-3">
         <div className="flex items-center gap-2">
@@ -22,7 +23,7 @@ export function TradeStatus({ closedPositions, isBuying }: TradeStatusProps) {
     );
   }
 
-  if (!lastTrade) {
+  if (!runningContract) {
     return (
       <Card className="astral-glass border-glow-gray p-3">
         <span className="text-xs text-muted-foreground">No recent trades</span>
@@ -30,7 +31,8 @@ export function TradeStatus({ closedPositions, isBuying }: TradeStatusProps) {
     );
   }
 
-  const profit = lastTrade.sell_price - lastTrade.buy_price;
+  // Use real profit from the contract
+  const profit = parseFloat(runningContract.profit);
   const isWin = profit > 0;
   const isLoss = profit < 0;
 
@@ -43,7 +45,7 @@ export function TradeStatus({ closedPositions, isBuying }: TradeStatusProps) {
             {isWin ? 'WON' : isLoss ? 'LOST' : 'CLOSED'}
           </span>
           <span className={`text-xs font-mono ${isWin ? 'text-green-300' : isLoss ? 'text-red-300' : 'text-gray-300'}`}>
-            {profit >= 0 ? '+' : ''}{profit.toFixed(2)} USD
+            {profit >= 0 ? '+' : ''}{profit.toFixed(2)} {runningContract.currency}
           </span>
         </div>
       </div>

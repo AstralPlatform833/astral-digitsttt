@@ -208,10 +208,12 @@ export function useAuth(): UseAuthReturn {
             const otpUrl = await fetchOTPUrl(loginId, storedAuth);
             setWsUrl(otpUrl);
             setAuthState('authenticated');
-          } catch {
-            // OTP fetch failed — token may be invalid, clear and fallback
-            clearAllAuthData();
-            setAuthState('unauthenticated');
+          } catch (err) {
+            // OTP fetch failed — keep session but mark as error for manual re-auth
+            console.error('OTP fetch failed:', err);
+            setError('Session expired. Please login again.');
+            setAuthState('error');
+            // Don't clear auth data - user can retry login
           }
         } else {
           // Have auth info but no accounts — re-fetch
@@ -255,10 +257,13 @@ export function useAuth(): UseAuthReturn {
       try {
         const otpUrl = await fetchOTPUrl(accountId, authInfo);
         setWsUrl(otpUrl);
-      } catch {
-        clearAllAuthData();
-        setAuthState('unauthenticated');
+      } catch (err) {
+        // OTP refresh failed — keep session but mark as error
+        console.error('OTP refresh failed:', err);
+        setError('Session expired. Please login again.');
+        setAuthState('error');
         setWsUrl(undefined);
+        // Don't clear auth data - user can retry login
       }
     };
 

@@ -6,10 +6,20 @@ import type { ActiveSymbol, ContractsForResponse, ContractInfo, DurationLimits }
 import { pickDefaultSymbol } from '../utils/pick-default-symbol';
 
 const SYMBOL_PARAM = 'symbol';
+const STORAGE_KEY = 'selected_symbol';
 
 function readSymbolFromUrl(): string | undefined {
   if (typeof window === 'undefined') return undefined;
   return new URLSearchParams(window.location.search).get(SYMBOL_PARAM) ?? undefined;
+}
+
+function readSymbolFromStorage(): string | undefined {
+  if (typeof window === 'undefined') return undefined;
+  try {
+    return localStorage.getItem(STORAGE_KEY) ?? undefined;
+  } catch {
+    return undefined;
+  }
 }
 
 function writeSymbolToUrl(symbol: string): void {
@@ -18,6 +28,15 @@ function writeSymbolToUrl(symbol: string): void {
   params.set(SYMBOL_PARAM, symbol);
   const next = `${window.location.pathname}?${params.toString()}${window.location.hash}`;
   window.history.replaceState(null, '', next);
+}
+
+function writeSymbolToStorage(symbol: string): void {
+  if (typeof window === 'undefined') return;
+  try {
+    localStorage.setItem(STORAGE_KEY, symbol);
+  } catch {
+    // Ignore storage errors
+  }
 }
 
 interface UseActiveSymbolsReturn {
@@ -75,6 +94,7 @@ export function useActiveSymbols(
 
     setActiveSymbol(symbol);
     writeSymbolToUrl(symbol.underlying_symbol);
+    writeSymbolToStorage(symbol.underlying_symbol);
     loadContractsFor(ws, symbol).catch(() => {});
   }, [ws, isConnected, symbols, activeSymbol, loadContractsFor]);
 
@@ -97,9 +117,13 @@ export function useActiveSymbols(
         }
 
         setSymbols(allSymbols);
-        const chosen = pickDefaultSymbol(allSymbols, readSymbolFromUrl());
+        // Prioritize localStorage over URL to prevent auto-switching
+        const storedSymbol = readSymbolFromStorage();
+        const urlSymbol = readSymbolFromUrl();
+        const chosen = pickDefaultSymbol(allSymbols, storedSymbol ?? urlSymbol);
         setActiveSymbol(chosen);
         writeSymbolToUrl(chosen.underlying_symbol);
+        writeSymbolToStorage(chosen.underlying_symbol);
 
         await loadContractsFor(ws!, chosen);
         if (disposed) return;

@@ -28,7 +28,9 @@ import type {
   BuyResult,
 } from '@deriv/core';
 import type { ContractMode, TradeType, DigitStats, ClosedPosition } from '../lib/types';
+import type { OpenPosition } from '@/hooks/use-open-positions';
 import type { DigitsAppConfig } from '../lib/app-config';
+import { PositionsTable } from './custom/positions-table';
 
 const DIGIT_TRADE_TYPE_OPTIONS: { value: TradeType; label: string }[] = [
   { value: 'matches-differs', label: 'Matches/Differs' },
@@ -80,7 +82,12 @@ export interface DigitsViewProps {
   buyResult: BuyResult | null;
   buyError: string | null;
   clearBuyResult: () => void;
+  openPositions: OpenPosition[];
   closedPositions: ClosedPosition[];
+  sellContract: (contractId: number, bidPrice: string) => Promise<void>;
+  sellingId: number | null;
+  sellError: string | null;
+  clearSellError: () => void;
   // Branding (used by preview route; no-op in the real app)
   logoSrc?: string;
   appName?: string;
@@ -140,7 +147,12 @@ export function DigitsView({
   buyResult,
   buyError,
   clearBuyResult,
+  openPositions,
   closedPositions,
+  sellContract,
+  sellingId,
+  sellError,
+  clearSellError,
   logoSrc,
   appName,
   appConfig,
@@ -358,7 +370,7 @@ export function DigitsView({
                 {/* Trade Status - Only show when authenticated */}
                 {authState === 'authenticated' && (
                   <TradeStatus
-                    closedPositions={closedPositions}
+                    openPositions={openPositions}
                     isBuying={isBuying}
                   />
                 )}
@@ -393,6 +405,20 @@ export function DigitsView({
                       buyError={buyError}
                       onClearBuyResult={clearBuyResult}
                       isAuthenticated={authState === 'authenticated'}
+                    />
+                  </Card>
+                )}
+
+                {/* Positions Report - Only show when authenticated */}
+                {authState === 'authenticated' && (
+                  <Card className="astral-glass border-glow-cyan p-5 lg:col-span-2">
+                    <PositionsTable
+                      openPositions={openPositions}
+                      closedPositions={closedPositions}
+                      onSell={sellContract}
+                      sellingId={sellingId}
+                      sellError={sellError}
+                      onClearSellError={clearSellError}
                     />
                   </Card>
                 )}

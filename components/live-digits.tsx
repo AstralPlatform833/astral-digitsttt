@@ -86,7 +86,12 @@ export function LiveDigits({
       buyResult={trading.buyResult}
       buyError={trading.buyError}
       clearBuyResult={trading.clearBuyResult}
+      openPositions={trading.openPositions}
       closedPositions={trading.closedPositions}
+      sellContract={trading.sellContract}
+      sellingId={trading.sellingId}
+      sellError={trading.sellError}
+      clearSellError={trading.clearSellError}
       appConfig={appConfig}
       editMode={editMode}
       onSelect={onSelect}
