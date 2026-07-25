@@ -65,10 +65,10 @@ export function LiveDigitStream({ currentTick, lastDigit, activeSymbol, pipSize,
   };
 
   return (
-    <Card className="astral-glass border-glow-cyan p-4 md:col-span-8 rounded-xl">
+    <div>
       {/* Current Tick Display */}
       {currentTick && (
-        <div className="mb-3 bg-black/30 rounded-lg p-2 border border-white/10">
+        <div className="mb-4 bg-black/30 rounded-lg p-3 border border-white/10">
           <p className="text-[11px] text-muted-foreground uppercase tracking-wider mb-1">Latest Tick</p>
           <p className="text-xl font-mono font-bold text-neon-cyan">
             {formatPrice(currentTick.quote)}
@@ -77,7 +77,7 @@ export function LiveDigitStream({ currentTick, lastDigit, activeSymbol, pipSize,
       )}
 
       {/* Digit Stream - Single row on desktop, 2-row wrap on mobile */}
-      <div className="flex flex-wrap gap-2 justify-center">
+      <div className="flex gap-2 justify-center flex-wrap sm:flex-nowrap">
         {displayDigits.map((digit, index) => {
           const colorClass = NEON_COLORS[index % NEON_COLORS.length];
           const glowClass = GLOW_COLORS[index % GLOW_COLORS.length];
@@ -87,7 +87,7 @@ export function LiveDigitStream({ currentTick, lastDigit, activeSymbol, pipSize,
             <div
               key={`${digit}-${index}`}
               className={`
-                digit-ball w-8 h-8 sm:w-8 sm:h-8 rounded-full
+                digit-ball w-7 h-7 sm:w-8 sm:h-8 rounded-full
                 ${colorClass} ${glowClass}
                 flex items-center justify-center
                 text-white font-bold text-sm
@@ -100,6 +100,6 @@ export function LiveDigitStream({ currentTick, lastDigit, activeSymbol, pipSize,
           );
         })}
       </div>
-    </Card>
+    </div>
   );
 }

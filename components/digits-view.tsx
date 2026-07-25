@@ -319,42 +319,58 @@ export function DigitsView({
                 />
               </div>
 
-              {/* Premium Grid Layout - Compact Terminal */}
-              <div className="grid grid-cols-1 md:grid-cols-12 gap-4">
-                {/* Row 1: Market Selector + Live Digit Stream */}
-                <Card className="astral-glass border-glow-cyan p-4 md:col-span-4 rounded-xl">
-                  <div className="flex items-center gap-2 mb-3">
-                    <div className="w-6 h-6 rounded bg-gradient-to-br from-neon-cyan to-neon-green flex items-center justify-center text-white font-bold text-xs glow-cyan">
-                      💹
+              {/* Astral Terminal - Integrated Zones */}
+              <div className="flex flex-col gap-6">
+                {/* Zone 1: Market + Live Stream */}
+                <div className="astral-glass border border-white/10 rounded-xl p-5">
+                  <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
+                    {/* Market Selector */}
+                    <div className="lg:col-span-4">
+                      <div className="flex items-center gap-2 mb-3">
+                        <div className="w-5 h-5 rounded bg-gradient-to-br from-neon-cyan to-neon-green flex items-center justify-center text-white font-bold text-xs glow-cyan">
+                          💹
+                        </div>
+                        <span className="text-xs font-bold uppercase tracking-wider text-foreground">
+                          Market
+                        </span>
+                      </div>
+                      <SymbolSelector
+                        symbols={symbols}
+                        activeSymbol={activeSymbol}
+                        onSymbolChange={selectSymbol}
+                      />
                     </div>
-                    <h3 className="text-xs font-bold uppercase tracking-wider text-foreground">
-                      Market
-                    </h3>
+
+                    {/* Live Stream */}
+                    <div className="lg:col-span-8">
+                      <div className="flex items-center gap-2 mb-3">
+                        <div className="w-5 h-5 rounded bg-gradient-to-br from-neon-purple to-neon-pink flex items-center justify-center text-white font-bold text-xs glow-purple">
+                          📡
+                        </div>
+                        <span className="text-xs font-bold uppercase tracking-wider text-foreground">
+                          Live Stream
+                        </span>
+                      </div>
+                      <LiveDigitStream
+                        currentTick={currentTick}
+                        lastDigit={lastDigit}
+                        activeSymbol={activeSymbol}
+                        pipSize={pipSize}
+                        prices={prices}
+                      />
+                    </div>
                   </div>
-                  <SymbolSelector
-                    symbols={symbols}
-                    activeSymbol={activeSymbol}
-                    onSymbolChange={selectSymbol}
-                  />
-                </Card>
+                </div>
 
-                <LiveDigitStream
-                  currentTick={currentTick}
-                  lastDigit={lastDigit}
-                  activeSymbol={activeSymbol}
-                  pipSize={pipSize}
-                  prices={prices}
-                />
-
-                {/* Row 2: Digit Distribution + Astral Signal */}
-                <Card className="astral-glass border-glow-green p-4 md:col-span-8 rounded-xl">
-                  <div className="flex items-center gap-2 mb-3">
-                    <div className="w-6 h-6 rounded bg-gradient-to-br from-neon-green to-neon-cyan flex items-center justify-center text-white font-bold text-xs glow-green">
-                      📈
+                {/* Zone 2: Digit Analysis */}
+                <div className="astral-glass border border-white/10 rounded-xl p-5">
+                  <div className="flex items-center gap-2 mb-4">
+                    <div className="w-5 h-5 rounded bg-gradient-to-br from-neon-green to-neon-cyan flex items-center justify-center text-white font-bold text-xs glow-green">
+                      �
                     </div>
-                    <h3 className="text-xs font-bold uppercase tracking-wider text-foreground">
-                      Digit Distribution
-                    </h3>
+                    <span className="text-xs font-bold uppercase tracking-wider text-foreground">
+                      Digit Analysis
+                    </span>
                   </div>
                   <DigitStatsBar
                     digitStats={digitStats}
@@ -362,46 +378,72 @@ export function DigitsView({
                     onDigitSelect={setSelectedDigit}
                     lastDigit={lastDigit}
                   />
-                </Card>
+                </div>
 
-                <AISignal selectedDigit={selectedDigit} isConnected={isConnected} />
-
-                {/* Row 3: Trading Controls - Full Width */}
+                {/* Zone 3: Astral Signal + Trading */}
                 {authState === 'authenticated' && (
-                  <Card className="astral-glass border-glow-green p-4 md:col-span-12 rounded-xl">
-                    <div className="flex items-center gap-2 mb-3">
-                      <div className="w-6 h-6 rounded bg-gradient-to-br from-neon-green to-neon-cyan flex items-center justify-center text-white font-bold text-xs glow-green">
-                        ⚡
+                  <div className="astral-glass border border-white/10 rounded-xl p-5">
+                    <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
+                      {/* Astral Signal */}
+                      <div className="lg:col-span-4">
+                        <div className="flex items-center gap-2 mb-3">
+                          <div className="w-5 h-5 rounded bg-gradient-to-br from-neon-purple to-neon-pink flex items-center justify-center text-white font-bold text-xs glow-purple">
+                            🤖
+                          </div>
+                          <span className="text-xs font-bold uppercase tracking-wider text-foreground">
+                            Astral Signal
+                          </span>
+                        </div>
+                        <AISignal selectedDigit={selectedDigit} isConnected={isConnected} />
                       </div>
-                      <h3 className="text-xs font-bold uppercase tracking-wider text-foreground">
-                        Trading Controls
-                      </h3>
+
+                      {/* Trading Controls */}
+                      <div className="lg:col-span-8">
+                        <div className="flex items-center gap-2 mb-3">
+                          <div className="w-5 h-5 rounded bg-gradient-to-br from-neon-green to-neon-cyan flex items-center justify-center text-white font-bold text-xs glow-green">
+                            ⚡
+                          </div>
+                          <span className="text-xs font-bold uppercase tracking-wider text-foreground">
+                            Trading
+                          </span>
+                        </div>
+                        <TradeControls
+                          tradeType={tradeType}
+                          contractMode={contractMode}
+                          onContractModeChange={setContractMode}
+                          selectedDigit={selectedDigit}
+                          isConnected={isConnected}
+                          stake={stake}
+                          onStakeChange={setStake}
+                          duration={duration}
+                          onDurationChange={setDuration}
+                          durationLimits={durationLimits}
+                          proposal={proposal}
+                          isProposalLoading={isProposalLoading}
+                          onBuy={buyContract}
+                          isBuying={isBuying}
+                          buyResult={buyResult}
+                          buyError={buyError}
+                          onClearBuyResult={clearBuyResult}
+                          isAuthenticated={authState === 'authenticated'}
+                        />
+                      </div>
                     </div>
-                    <TradeControls
-                      tradeType={tradeType}
-                      contractMode={contractMode}
-                      onContractModeChange={setContractMode}
-                      selectedDigit={selectedDigit}
-                      isConnected={isConnected}
-                      stake={stake}
-                      onStakeChange={setStake}
-                      duration={duration}
-                      onDurationChange={setDuration}
-                      durationLimits={durationLimits}
-                      proposal={proposal}
-                      isProposalLoading={isProposalLoading}
-                      onBuy={buyContract}
-                      isBuying={isBuying}
-                      buyResult={buyResult}
-                      buyError={buyError}
-                      onClearBuyResult={clearBuyResult}
-                      isAuthenticated={authState === 'authenticated'}
-                    />
-                  </Card>
+                  </div>
                 )}
 
-                {/* Row 4: Transition Matrix - Full Width */}
-                <TransitionMatrix digitStats={digitStats} />
+                {/* Zone 4: Transition Matrix */}
+                <div className="astral-glass border border-white/10 rounded-xl p-5">
+                  <div className="flex items-center gap-2 mb-4">
+                    <div className="w-5 h-5 rounded bg-gradient-to-br from-neon-purple to-neon-pink flex items-center justify-center text-white font-bold text-xs glow-purple">
+                      🔄
+                    </div>
+                    <span className="text-xs font-bold uppercase tracking-wider text-foreground">
+                      Transition Matrix
+                    </span>
+                  </div>
+                  <TransitionMatrix digitStats={digitStats} />
+                </div>
               </div>
             </>
           )}

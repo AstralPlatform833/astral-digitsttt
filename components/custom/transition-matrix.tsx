@@ -1,6 +1,5 @@
 'use client';
 
-import { Card } from '@/components/ui/card';
 import type { DigitStats } from '@/lib/types';
 
 interface TransitionMatrixProps {
@@ -40,38 +39,22 @@ export function TransitionMatrix({ digitStats }: TransitionMatrixProps) {
   };
 
   return (
-    <Card className="astral-glass border-glow-purple p-4 md:col-span-12 rounded-xl">
-      <div className="flex items-center gap-2 mb-3">
-        <div className="w-5 h-5 rounded bg-gradient-to-br from-neon-purple to-neon-pink flex items-center justify-center text-white font-bold text-xs glow-purple">
-          🔄
+    <div className="grid grid-cols-10 gap-1">
+      {matrix.map((cell, index) => (
+        <div
+          key={`${cell.row}-${cell.col}`}
+          className={`
+            aspect-square rounded-sm flex items-center justify-center
+            text-xs font-bold text-white
+            ${getHeatmapColor(cell.intensity)}
+            ${getGlowClass(cell.intensity)}
+            transition-all duration-300 hover:scale-110 hover:z-10 cursor-pointer
+          `}
+          title={`Row: ${cell.row}, Col: ${cell.col}, Intensity: ${cell.intensity.toFixed(1)}%`}
+        >
+          {cell.digit}
         </div>
-        <h3 className="text-[10px] font-bold uppercase tracking-wider text-foreground">
-          Transition Matrix
-        </h3>
-      </div>
-
-      <div className="grid grid-cols-10 gap-1">
-        {matrix.map((cell, index) => (
-          <div
-            key={`${cell.row}-${cell.col}`}
-            className={`
-              aspect-square rounded-sm flex items-center justify-center
-              text-xs font-bold text-white
-              ${getHeatmapColor(cell.intensity)}
-              ${getGlowClass(cell.intensity)}
-              transition-all duration-300 hover:scale-110 hover:z-10 cursor-pointer
-            `}
-            title={`Row: ${cell.row}, Col: ${cell.col}, Intensity: ${cell.intensity.toFixed(1)}%`}
-          >
-            {cell.digit}
-          </div>
-        ))}
-      </div>
-
-      <div className="mt-3 flex items-center justify-between text-[10px] text-muted-foreground">
-        <span>Digit transition patterns</span>
-        <span className="text-neon-purple">Heatmap</span>
-      </div>
-    </Card>
+      ))}
+    </div>
   );
 }
