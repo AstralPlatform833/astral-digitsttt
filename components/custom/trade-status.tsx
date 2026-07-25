@@ -10,7 +10,7 @@ interface TradeStatusProps {
 
 export function TradeStatus({ openPositions, isBuying }: TradeStatusProps) {
   // Get the most recent open position (running contract)
-  const runningContract = openPositions[openPositions.length - 1];
+  const runningContract = openPositions.length > 0 ? openPositions[openPositions.length - 1] : undefined;
 
   if (isBuying || (runningContract && runningContract.status === 'open' && !runningContract.is_sold && !runningContract.is_expired)) {
     return (
