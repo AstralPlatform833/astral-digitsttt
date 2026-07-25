@@ -195,6 +195,11 @@
     95% { transform: scaleY(0.1); }
   }
 
+  @keyframes blink-scale {
+    0%, 90%, 100% { transform: scaleY(1); }
+    95% { transform: scaleY(0.05); }
+  }
+
   .animate-breathe {
     animation: breathe 3s ease-in-out infinite;
   }

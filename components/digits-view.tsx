@@ -325,17 +325,17 @@ export function DigitsView({
               </div>
 
               {/* Astral Terminal - Integrated Zones */}
-              <div className="flex flex-col gap-4">
+              <div className="flex flex-col gap-3">
                 {/* Zone 1: Market + Live Stream */}
-                <div className="astral-glass border border-white/10 rounded-xl p-5">
-                  <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
+                <div className="astral-glass border border-white/10 rounded-xl p-3">
+                  <div className="grid grid-cols-1 lg:grid-cols-12 gap-4">
                     {/* Market Selector */}
                     <div className="lg:col-span-4">
-                      <div className="flex items-center gap-2 mb-3">
-                        <div className="w-5 h-5 rounded bg-gradient-to-br from-neon-cyan to-neon-green flex items-center justify-center text-white font-bold text-xs glow-cyan">
+                      <div className="flex items-center gap-2 mb-2">
+                        <div className="w-4 h-4 rounded bg-gradient-to-br from-neon-cyan to-neon-green flex items-center justify-center text-white font-bold text-[10px] glow-cyan">
                           💹
                         </div>
-                        <span className="text-xs font-bold uppercase tracking-wider text-foreground">
+                        <span className="text-[10px] font-bold uppercase tracking-wider text-foreground">
                           Market
                         </span>
                       </div>
@@ -348,14 +348,6 @@ export function DigitsView({
 
                     {/* Live Stream */}
                     <div className="lg:col-span-8">
-                      <div className="flex items-center gap-2 mb-3">
-                        <div className="w-5 h-5 rounded bg-gradient-to-br from-neon-purple to-neon-pink flex items-center justify-center text-white font-bold text-xs glow-purple">
-                          📡
-                        </div>
-                        <span className="text-xs font-bold uppercase tracking-wider text-foreground">
-                          Live Stream
-                        </span>
-                      </div>
                       <LiveDigitStream
                         currentTick={currentTick}
                         lastDigit={lastDigit}
@@ -368,10 +360,10 @@ export function DigitsView({
                 </div>
 
                 {/* Zone 2: Digit Analysis */}
-                <div className="astral-glass border border-white/10 rounded-xl p-5">
-                  <div className="flex items-center gap-2 mb-4">
-                    <div className="w-5 h-5 rounded bg-gradient-to-br from-neon-green to-neon-cyan flex items-center justify-center text-white font-bold text-xs glow-green">
-                      �
+                <div className="astral-glass border border-white/10 rounded-xl p-3">
+                  <div className="flex items-center gap-2 mb-2">
+                    <div className="w-4 h-4 rounded bg-gradient-to-br from-neon-green to-neon-cyan flex items-center justify-center text-white font-bold text-[10px] glow-green">
+                      📊
                     </div>
                     <span className="text-xs font-bold uppercase tracking-wider text-foreground">
                       Digit Analysis
@@ -387,15 +379,15 @@ export function DigitsView({
 
                 {/* Zone 3: Astral Signal + Trading */}
                 {authState === 'authenticated' && (
-                  <div className="astral-glass border border-white/10 rounded-xl p-5">
-                    <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
+                  <div className="astral-glass border border-white/10 rounded-xl p-3">
+                    <div className="grid grid-cols-1 lg:grid-cols-12 gap-4">
                       {/* Astral Signal */}
                       <div className="lg:col-span-4">
-                        <div className="flex items-center gap-2 mb-3">
-                          <div className="w-5 h-5 rounded bg-gradient-to-br from-neon-purple to-neon-pink flex items-center justify-center text-white font-bold text-xs glow-purple">
+                        <div className="flex items-center gap-2 mb-2">
+                          <div className="w-4 h-4 rounded bg-gradient-to-br from-neon-purple to-neon-pink flex items-center justify-center text-white font-bold text-[10px] glow-purple">
                             🤖
                           </div>
-                          <span className="text-xs font-bold uppercase tracking-wider text-foreground">
+                          <span className="text-[10px] font-bold uppercase tracking-wider text-foreground">
                             Astral Signal
                           </span>
                         </div>
@@ -404,11 +396,11 @@ export function DigitsView({
 
                       {/* Trading Controls */}
                       <div className="lg:col-span-8">
-                        <div className="flex items-center gap-2 mb-3">
-                          <div className="w-5 h-5 rounded bg-gradient-to-br from-neon-green to-neon-cyan flex items-center justify-center text-white font-bold text-xs glow-green">
+                        <div className="flex items-center gap-2 mb-2">
+                          <div className="w-4 h-4 rounded bg-gradient-to-br from-neon-green to-neon-cyan flex items-center justify-center text-white font-bold text-[10px] glow-green">
                             ⚡
                           </div>
-                          <span className="text-xs font-bold uppercase tracking-wider text-foreground">
+                          <span className="text-[10px] font-bold uppercase tracking-wider text-foreground">
                             Trading
                           </span>
                         </div>

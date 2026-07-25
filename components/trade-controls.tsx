@@ -112,11 +112,11 @@ export function TradeControls({
   const modeOptions = CONTRACT_MODE_OPTIONS[tradeType];
 
   return (
-    <div className="space-y-3">
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+    <div className="space-y-2">
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-2">
         {/* Stake Input */}
-        <div className="space-y-1">
-          <Label htmlFor="stake" className="text-[10px] text-muted-foreground uppercase tracking-wider">
+        <div className="space-y-0.5">
+          <Label htmlFor="stake" className="text-[9px] text-muted-foreground uppercase tracking-wider">
             Stake
           </Label>
           <Input
@@ -130,13 +130,13 @@ export function TradeControls({
             min={0}
             step="0.01"
             labelRight="USD"
-            className="astral-glass border-white/20 input-glow h-10"
+            className="astral-glass border-white/20 input-glow h-8 text-sm"
           />
         </div>
 
         {/* Duration Input */}
-        <div className="space-y-1">
-          <Label htmlFor="duration" className="text-[10px] text-muted-foreground uppercase tracking-wider">
+        <div className="space-y-0.5">
+          <Label htmlFor="duration" className="text-[9px] text-muted-foreground uppercase tracking-wider">
             Duration
           </Label>
           <Input
@@ -151,7 +151,7 @@ export function TradeControls({
             max={durationLimits.max}
             step={1}
             labelRight="Ticks"
-            className="astral-glass border-white/20 input-glow h-10"
+            className="astral-glass border-white/20 input-glow h-8 text-sm"
           />
         </div>
 

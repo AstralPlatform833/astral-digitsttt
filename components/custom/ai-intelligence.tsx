@@ -19,17 +19,17 @@ export function AISignal({ signal, hasData, isConnected = false }: AISignalProps
   const confidenceBars = getConfidenceBars();
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-3">
       {/* Main Signal - Dominant */}
-      <div className="text-center py-4">
-        <p className="text-3xl font-bold text-white mb-2">
+      <div className="text-center py-2">
+        <p className="text-xl font-bold text-white mb-1">
           {signal.signal}
         </p>
         <div className="flex items-center justify-center gap-2">
-          <p className="text-4xl font-bold text-[#00FF88]">
+          <p className="text-2xl font-bold text-[#00FF88]">
             {hasData ? `${signal.confidence.toFixed(0)}%` : '--'}
           </p>
-          <p className={`text-xs font-semibold uppercase tracking-wider ${
+          <p className={`text-[10px] font-semibold uppercase tracking-wider ${
             signal.isValid ? 'text-[#00FF88]' : 'text-muted-foreground'
           }`}>
             {signal.isValid ? 'Qualified' : 'Waiting'}
@@ -39,13 +39,12 @@ export function AISignal({ signal, hasData, isConnected = false }: AISignalProps
 
       {/* Confidence Bar */}
       {hasData && (
-        <div className="space-y-2">
-          <p className="text-[10px] text-muted-foreground uppercase tracking-wider">Astra Confidence</p>
-          <div className="flex gap-1">
+        <div className="space-y-1">
+          <div className="flex gap-0.5">
             {confidenceBars.map((filled, i) => (
               <div
                 key={i}
-                className={`h-2 flex-1 rounded-sm transition-all ${
+                className={`h-1.5 flex-1 rounded-sm transition-all ${
                   filled ? 'bg-[#00FF88]' : 'bg-white/10'
                 }`}
               />
@@ -54,13 +53,13 @@ export function AISignal({ signal, hasData, isConnected = false }: AISignalProps
         </div>
       )}
 
-      {/* Details */}
-      <div className="space-y-2 pt-3 border-t border-white/10">
+      {/* Details - Compact */}
+      <div className="space-y-1.5 pt-2 border-t border-white/10">
         {/* Trigger */}
         {signal.isValid && signal.triggerDigit !== undefined && (
           <div className="flex items-center justify-between">
-            <p className="text-[10px] text-muted-foreground uppercase tracking-wider">Trigger</p>
-            <p className="text-lg font-bold text-white">
+            <p className="text-[9px] text-muted-foreground uppercase tracking-wider">Trigger</p>
+            <p className="text-sm font-bold text-white">
               {signal.triggerDigit}
             </p>
           </div>
@@ -69,8 +68,8 @@ export function AISignal({ signal, hasData, isConnected = false }: AISignalProps
         {/* Target (for DIFFERS) */}
         {signal.isValid && signal.targetDigit !== undefined && (
           <div className="flex items-center justify-between">
-            <p className="text-[10px] text-muted-foreground uppercase tracking-wider">Target</p>
-            <p className="text-lg font-bold text-white">
+            <p className="text-[9px] text-muted-foreground uppercase tracking-wider">Target</p>
+            <p className="text-sm font-bold text-white">
               {signal.targetDigit}
             </p>
           </div>
@@ -78,17 +77,16 @@ export function AISignal({ signal, hasData, isConnected = false }: AISignalProps
 
         {/* Strategy */}
         <div className="flex items-center justify-between">
-          <p className="text-[10px] text-muted-foreground uppercase tracking-wider">Strategy</p>
-          <p className="text-[10px] text-foreground/80">
+          <p className="text-[9px] text-muted-foreground uppercase tracking-wider">Strategy</p>
+          <p className="text-[9px] text-foreground/80">
             {signal.type === 'WAIT' ? 'None' : signal.type.replace('_', ' ')}
           </p>
         </div>
 
         {/* Evidence */}
         {signal.evidence && (
-          <div className="pt-2">
-            <p className="text-[10px] text-muted-foreground uppercase tracking-wider mb-1">Evidence</p>
-            <p className="text-[10px] text-foreground/70 leading-relaxed">
+          <div className="pt-1">
+            <p className="text-[9px] text-foreground/60 leading-tight">
               {signal.evidence}
             </p>
           </div>

@@ -65,19 +65,16 @@ export function LiveDigitStream({ currentTick, lastDigit, activeSymbol, pipSize,
   };
 
   return (
-    <div>
-      {/* Current Tick Display */}
+    <div className="flex items-center gap-4">
+      {/* Current Price */}
       {currentTick && (
-        <div className="mb-4 bg-black/30 rounded-lg p-3 border border-white/10">
-          <p className="text-[11px] text-muted-foreground uppercase tracking-wider mb-1">Latest Tick</p>
-          <p className="text-xl font-mono font-bold text-neon-cyan">
-            {formatPrice(currentTick.quote)}
-          </p>
-        </div>
+        <p className="text-lg font-mono font-bold text-neon-cyan">
+          {formatPrice(currentTick.quote)}
+        </p>
       )}
 
-      {/* Digit Stream - Single row on desktop, 2-row wrap on mobile */}
-      <div className="flex gap-2 justify-center flex-wrap sm:flex-nowrap">
+      {/* Digit Stream */}
+      <div className="flex gap-1.5">
         {displayDigits.map((digit, index) => {
           const colorClass = NEON_COLORS[index % NEON_COLORS.length];
           const glowClass = GLOW_COLORS[index % GLOW_COLORS.length];
@@ -87,12 +84,12 @@ export function LiveDigitStream({ currentTick, lastDigit, activeSymbol, pipSize,
             <div
               key={`${digit}-${index}`}
               className={`
-                digit-ball w-7 h-7 sm:w-8 sm:h-8 rounded-full
+                w-6 h-6 rounded-full
                 ${colorClass} ${glowClass}
                 flex items-center justify-center
-                text-white font-bold text-sm
+                text-white font-bold text-xs
                 transition-all duration-300
-                ${isLatest ? 'scale-110 ring-2 ring-white/50 shadow-lg shadow-white/20' : 'opacity-80'}
+                ${isLatest ? 'scale-110 ring-2 ring-white/50 shadow-lg shadow-white/20' : 'opacity-70'}
               `}
             >
               {digit}
