@@ -12,11 +12,6 @@ export type {
   BuyResult,
 } from '@deriv/core';
 
-// Re-export shared position types from shared hooks
-export type { OpenPosition } from '@/hooks/use-open-positions';
-export type { ClosedPosition } from '@/hooks/use-closed-positions';
-export type { PositionFilter } from '@/components/custom/positions-table';
-
 // Digit-specific types
 
 export type ContractMode =

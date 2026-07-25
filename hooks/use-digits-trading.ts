@@ -16,7 +16,9 @@ import type {
 import { useBaseTrading } from '@/hooks/use-base-trading';
 import type { UseBaseTradingParams } from '@/hooks/use-base-trading';
 import { computeDigitStats, getLastDigit } from '../lib/digit-stats';
-import type { ContractMode, TradeType, DigitStats, OpenPosition, ClosedPosition } from '../lib/types';
+import type { ContractMode, TradeType, DigitStats } from '../lib/types';
+import type { OpenPosition } from './use-open-positions';
+import type { ClosedPosition } from './use-closed-positions';
 
 const CONTRACT_TYPES = ['DIGITMATCH', 'DIGITDIFF', 'DIGITOVER', 'DIGITUNDER', 'DIGITEVEN', 'DIGITODD'];
 

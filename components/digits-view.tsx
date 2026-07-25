@@ -27,8 +27,9 @@ import type {
   DurationLimits,
   BuyResult,
 } from '@deriv/core';
-import type { ContractMode, TradeType, DigitStats, ClosedPosition } from '../lib/types';
+import type { ContractMode, TradeType, DigitStats } from '../lib/types';
 import type { OpenPosition } from '@/hooks/use-open-positions';
+import type { ClosedPosition } from '@/hooks/use-closed-positions';
 import type { DigitsAppConfig } from '../lib/app-config';
 import { PositionsTable } from './custom/positions-table';
 
