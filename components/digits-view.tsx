@@ -319,16 +319,16 @@ export function DigitsView({
                 />
               </div>
 
-              {/* Premium Grid Layout */}
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-                {/* Market Selector */}
-                <Card className="astral-glass border-glow-cyan p-5">
-                  <div className="flex items-center gap-3 mb-4">
-                    <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-neon-cyan to-neon-green flex items-center justify-center text-white font-bold text-sm glow-cyan">
+              {/* Premium Grid Layout - Compact Terminal */}
+              <div className="grid grid-cols-1 md:grid-cols-12 gap-3">
+                {/* Row 1: Market Selector + Live Digit Stream */}
+                <Card className="astral-glass border-glow-cyan p-3 md:col-span-4">
+                  <div className="flex items-center gap-2 mb-2">
+                    <div className="w-6 h-6 rounded bg-gradient-to-br from-neon-cyan to-neon-green flex items-center justify-center text-white font-bold text-xs glow-cyan">
                       💹
                     </div>
-                    <h3 className="text-sm font-bold uppercase tracking-wider text-foreground">
-                      Market Selector
+                    <h3 className="text-xs font-bold uppercase tracking-wider text-foreground">
+                      Market
                     </h3>
                   </div>
                   <SymbolSelector
@@ -338,8 +338,7 @@ export function DigitsView({
                   />
                 </Card>
 
-                {/* Live Digit Stream - Merged with Current Tick */}
-                <LiveDigitStream 
+                <LiveDigitStream
                   currentTick={currentTick}
                   lastDigit={lastDigit}
                   activeSymbol={activeSymbol}
@@ -347,13 +346,13 @@ export function DigitsView({
                   prices={prices}
                 />
 
-                {/* Digit Distribution */}
-                <Card className="astral-glass border-glow-green p-5 md:col-span-2">
-                  <div className="flex items-center gap-3 mb-4">
-                    <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-neon-green to-neon-cyan flex items-center justify-center text-white font-bold text-sm glow-green">
+                {/* Row 2: Digit Distribution + Astral Signal */}
+                <Card className="astral-glass border-glow-green p-3 md:col-span-8">
+                  <div className="flex items-center gap-2 mb-2">
+                    <div className="w-6 h-6 rounded bg-gradient-to-br from-neon-green to-neon-cyan flex items-center justify-center text-white font-bold text-xs glow-green">
                       📈
                     </div>
-                    <h3 className="text-sm font-bold uppercase tracking-wider text-foreground">
+                    <h3 className="text-xs font-bold uppercase tracking-wider text-foreground">
                       Digit Distribution
                     </h3>
                   </div>
@@ -365,25 +364,16 @@ export function DigitsView({
                   />
                 </Card>
 
-                {/* AI Signal Card */}
                 <AISignal selectedDigit={selectedDigit} isConnected={isConnected} />
 
-                {/* Trade Status - Only show when authenticated */}
+                {/* Row 3: Trading Controls - Full Width */}
                 {authState === 'authenticated' && (
-                  <TradeStatus
-                    openPositions={openPositions}
-                    isBuying={isBuying}
-                  />
-                )}
-
-                {/* Trading Controls - Full Width - Only show when authenticated */}
-                {authState === 'authenticated' && (
-                  <Card className="astral-glass border-glow-green p-5 lg:col-span-2">
-                    <div className="flex items-center gap-3 mb-4">
-                      <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-neon-green to-neon-cyan flex items-center justify-center text-white font-bold text-sm glow-green">
+                  <Card className="astral-glass border-glow-green p-4 md:col-span-12">
+                    <div className="flex items-center gap-2 mb-3">
+                      <div className="w-6 h-6 rounded bg-gradient-to-br from-neon-green to-neon-cyan flex items-center justify-center text-white font-bold text-xs glow-green">
                         ⚡
                       </div>
-                      <h3 className="text-sm font-bold uppercase tracking-wider text-foreground">
+                      <h3 className="text-xs font-bold uppercase tracking-wider text-foreground">
                         Trading Controls
                       </h3>
                     </div>
@@ -410,21 +400,7 @@ export function DigitsView({
                   </Card>
                 )}
 
-                {/* Positions Report - Only show when authenticated */}
-                {authState === 'authenticated' && (
-                  <Card className="astral-glass border-glow-cyan p-5 lg:col-span-2">
-                    <PositionsTable
-                      openPositions={openPositions}
-                      closedPositions={closedPositions}
-                      onSell={sellContract}
-                      sellingId={sellingId}
-                      sellError={sellError}
-                      onClearSellError={clearSellError}
-                    />
-                  </Card>
-                )}
-
-                {/* Transition Matrix - Always last */}
+                {/* Row 4: Transition Matrix - Full Width */}
                 <TransitionMatrix digitStats={digitStats} />
               </div>
             </>

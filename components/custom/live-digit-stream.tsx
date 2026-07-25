@@ -65,53 +65,41 @@ export function LiveDigitStream({ currentTick, lastDigit, activeSymbol, pipSize,
   };
 
   return (
-    <Card className="astral-glass border-glow-cyan p-5">
-      <div className="flex items-center gap-3 mb-4">
-        <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-neon-cyan to-neon-green flex items-center justify-center text-white font-bold text-sm glow-cyan">
-          📊
-        </div>
-        <h3 className="text-sm font-bold uppercase tracking-wider text-foreground">
-          Live Digit Stream
-        </h3>
-      </div>
-
+    <Card className="astral-glass border-glow-cyan p-3 md:col-span-8">
       {/* Current Tick Display */}
       {currentTick && (
-        <div className="mb-4 bg-black/30 rounded-lg p-3 border border-white/10">
+        <div className="mb-3 bg-black/30 rounded-lg p-2 border border-white/10">
           <p className="text-[10px] text-muted-foreground uppercase tracking-wider mb-1">Latest Tick</p>
-          <p className="text-lg font-mono font-bold text-neon-cyan">
+          <p className="text-base font-mono font-bold text-neon-cyan">
             {formatPrice(currentTick.quote)}
           </p>
         </div>
       )}
 
-      <div className="flex gap-2 overflow-x-auto pb-2">
+      {/* Digit Stream - No horizontal scroll, wraps naturally */}
+      <div className="flex flex-wrap gap-1.5 justify-center">
         {displayDigits.map((digit, index) => {
           const colorClass = NEON_COLORS[index % NEON_COLORS.length];
           const glowClass = GLOW_COLORS[index % GLOW_COLORS.length];
           const isLatest = index === displayDigits.length - 1;
-          
+
           return (
             <div
               key={`${digit}-${index}`}
               className={`
-                digit-ball flex-shrink-0 w-10 h-10 rounded-full 
+                digit-ball w-7 h-7 sm:w-8 sm:h-8 rounded-full
                 ${colorClass} ${glowClass}
-                flex items-center justify-center 
-                text-white font-bold text-sm
-                ${isLatest ? 'scale-110 ring-2 ring-white/50' : ''}
+                flex items-center justify-center
+                text-white font-bold text-xs sm:text-sm
+                transition-all duration-300
+                ${isLatest ? 'scale-110 ring-2 ring-white/50 shadow-lg shadow-white/20' : 'opacity-80'}
               `}
-              style={{
-                animationDelay: `${index * 0.1}s`
-              }}
             >
               {digit}
             </div>
           );
         })}
       </div>
-
-      <p className="text-[10px] text-muted-foreground mt-2 text-center">Last 15 digits</p>
     </Card>
   );
 }

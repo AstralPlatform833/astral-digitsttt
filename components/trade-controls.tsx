@@ -112,29 +112,29 @@ export function TradeControls({
   const modeOptions = CONTRACT_MODE_OPTIONS[tradeType];
 
   return (
-    <div className="space-y-3 sm:space-y-4">
+    <div className="space-y-2 sm:space-y-3">
       <ToggleGroup
         type="single"
         value={contractMode}
         onValueChange={value => {
           if (value) onContractModeChange(value as ContractMode);
         }}
-        className="w-full gap-2 rounded-xl bg-white/5 p-1.5 border border-white/10"
+        className="w-full gap-2 rounded-lg bg-white/5 p-1 border border-white/10"
       >
         {modeOptions.map(opt => (
           <ToggleGroupItem
             key={opt.value}
             value={opt.value}
-            className="flex-1 rounded-lg text-sm font-semibold text-muted-foreground data-[state=on]:bg-gradient-to-r data-[state=on]:from-neon-cyan data-[state=on]:to-neon-green data-[state=on]:text-black data-[state=on]:font-bold data-[state=on]:glow-cyan hover:text-foreground astral-transition"
+            className="flex-1 rounded-md text-xs font-semibold text-muted-foreground data-[state=on]:bg-gradient-to-r data-[state=on]:from-neon-cyan data-[state=on]:to-neon-green data-[state=on]:text-black data-[state=on]:font-bold data-[state=on]:glow-cyan hover:text-foreground astral-transition"
           >
             {opt.label}
           </ToggleGroupItem>
         ))}
       </ToggleGroup>
 
-      <div className="grid grid-cols-2 gap-3">
-        <div className="space-y-1.5">
-          <Label htmlFor="stake" className="text-xs text-muted-foreground uppercase tracking-wider">
+      <div className="grid grid-cols-2 gap-2 sm:gap-3">
+        <div className="space-y-1">
+          <Label htmlFor="stake" className="text-[10px] text-muted-foreground uppercase tracking-wider">
             Stake
           </Label>
           <Input
@@ -148,11 +148,11 @@ export function TradeControls({
             min={0}
             step="0.01"
             labelRight="USD"
-            className="astral-glass border-white/20 input-glow"
+            className="astral-glass border-white/20 input-glow h-9"
           />
         </div>
-        <div className="space-y-1.5">
-          <Label htmlFor="duration" className="text-xs text-muted-foreground uppercase tracking-wider">
+        <div className="space-y-1">
+          <Label htmlFor="duration" className="text-[10px] text-muted-foreground uppercase tracking-wider">
             Duration
           </Label>
           <Input
@@ -167,32 +167,32 @@ export function TradeControls({
             max={durationLimits.max}
             step={1}
             labelRight="Ticks"
-            className="astral-glass border-white/20 input-glow"
+            className="astral-glass border-white/20 input-glow h-9"
           />
         </div>
       </div>
 
-      <div className="rounded-xl border border-neon-cyan/30 p-3 sm:p-4 bg-neon-cyan/10 space-y-2">
-        <p className="text-[11px] sm:text-xs text-muted-foreground uppercase tracking-wider">Prediction</p>
-        <p className="text-xs sm:text-sm font-medium">
-          Last digit of the price will{' '}
+      <div className="rounded-lg border border-neon-cyan/30 p-2 sm:p-3 bg-neon-cyan/10 space-y-1.5">
+        <p className="text-[10px] text-muted-foreground uppercase tracking-wider">Prediction</p>
+        <p className="text-xs font-medium">
+          Last digit will{' '}
           <span className="text-neon-cyan font-bold">{getPredictionText(contractMode)}</span>
           {showDigitInPrediction(contractMode) && (
             <>
               {' '}
-              <span className="inline-flex w-6 h-6 rounded-full bg-gradient-to-br from-neon-cyan to-neon-green text-black items-center justify-center text-xs font-bold glow-cyan">
+              <span className="inline-flex w-5 h-5 rounded-full bg-gradient-to-br from-neon-cyan to-neon-green text-black items-center justify-center text-[10px] font-bold glow-cyan">
                 {selectedDigit}
               </span>
             </>
           )}
         </p>
         {(proposal || isProposalLoading) && (
-          <div className="flex items-center justify-between pt-2 border-t border-neon-cyan/30">
-            <span className="text-xs text-muted-foreground uppercase tracking-wider">Payout</span>
+          <div className="flex items-center justify-between pt-1.5 border-t border-neon-cyan/30">
+            <span className="text-[10px] text-muted-foreground uppercase tracking-wider">Payout</span>
             {isProposalLoading ? (
-              <Skeleton className="h-4 w-24" />
+              <Skeleton className="h-3 w-20" />
             ) : (
-              <span className="text-sm font-bold text-neon-green">
+              <span className="text-xs font-bold text-neon-green">
                 {(proposal?.payout || 0).toFixed(2)} USD
               </span>
             )}
@@ -203,7 +203,7 @@ export function TradeControls({
       {/* Buy button — inline in dashboard layout */}
       <div>
         <Button
-          className="w-full h-11 rounded-xl px-6 sm:h-12 sm:px-8 bg-gradient-to-r from-neon-green to-neon-cyan hover:from-neon-green/80 hover:to-neon-cyan/80 border-0 text-black font-bold btn-premium"
+          className="w-full h-9 rounded-lg px-4 sm:h-10 sm:px-6 bg-gradient-to-r from-neon-green to-neon-cyan hover:from-neon-green/80 hover:to-neon-cyan/80 border-0 text-black font-bold btn-premium text-sm"
           disabled={!isConnected || !proposal || isBuying}
           onClick={onBuy}
         >

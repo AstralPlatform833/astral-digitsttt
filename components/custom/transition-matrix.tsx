@@ -40,26 +40,26 @@ export function TransitionMatrix({ digitStats }: TransitionMatrixProps) {
   };
 
   return (
-    <Card className="astral-glass border-glow-purple p-5">
-      <div className="flex items-center gap-3 mb-4">
-        <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-neon-purple to-neon-pink flex items-center justify-center text-white font-bold text-sm glow-purple">
+    <Card className="astral-glass border-glow-purple p-3 md:col-span-12">
+      <div className="flex items-center gap-2 mb-2">
+        <div className="w-5 h-5 rounded bg-gradient-to-br from-neon-purple to-neon-pink flex items-center justify-center text-white font-bold text-xs glow-purple">
           🔄
         </div>
-        <h3 className="text-sm font-bold uppercase tracking-wider text-foreground">
+        <h3 className="text-[10px] font-bold uppercase tracking-wider text-foreground">
           Transition Matrix
         </h3>
       </div>
 
-      <div className="grid grid-cols-10 gap-1">
+      <div className="grid grid-cols-10 gap-0.5">
         {matrix.map((cell, index) => (
           <div
             key={`${cell.row}-${cell.col}`}
             className={`
-              aspect-square rounded flex items-center justify-center
-              text-xs font-bold text-white
+              aspect-square rounded-sm flex items-center justify-center
+              text-[10px] font-bold text-white
               ${getHeatmapColor(cell.intensity)}
               ${getGlowClass(cell.intensity)}
-              transition-all duration-300 hover:scale-125 hover:z-10 cursor-pointer
+              transition-all duration-300 hover:scale-110 hover:z-10 cursor-pointer
             `}
             title={`Row: ${cell.row}, Col: ${cell.col}, Intensity: ${cell.intensity.toFixed(1)}%`}
           >
@@ -68,9 +68,9 @@ export function TransitionMatrix({ digitStats }: TransitionMatrixProps) {
         ))}
       </div>
 
-      <div className="mt-4 flex items-center justify-between text-xs text-muted-foreground">
+      <div className="mt-2 flex items-center justify-between text-[10px] text-muted-foreground">
         <span>Digit transition patterns</span>
-        <span className="text-neon-purple">Heatmap View</span>
+        <span className="text-neon-purple">Heatmap</span>
       </div>
     </Card>
   );
