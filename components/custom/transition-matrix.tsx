@@ -31,21 +31,21 @@ export function TransitionMatrix({ digitStats, prices, pipSize }: TransitionMatr
 
   if (totalTransitions < 10) {
     return (
-      <div className="flex items-center justify-center h-32 text-xs text-muted-foreground">
+      <div className="flex items-center justify-center h-16 text-xs text-muted-foreground">
         Collecting data...
       </div>
     );
   }
 
   return (
-    <div className="grid grid-cols-10 gap-1">
+    <div className="grid grid-cols-10 gap-0.5">
       {matrix.map((row, rowIndex) =>
         row.map((probability, colIndex) => (
           <div
             key={`${rowIndex}-${colIndex}`}
             className={`
               aspect-square rounded-sm flex items-center justify-center
-              text-xs font-bold text-white
+              text-[10px] font-bold text-white
               ${getHeatmapColor(probability)}
               ${getGlowClass(probability)}
               transition-all duration-300 hover:scale-110 hover:z-10 cursor-pointer

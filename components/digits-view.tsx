@@ -15,7 +15,7 @@ import { TradeTypeChips } from '@/components/custom/trade-type-chips';
 import { SymbolSelector } from '@/components/custom/symbol-selector';
 import { ThemeToggle } from '@/components/custom/theme-toggle';
 import { AISignal } from '@/components/custom/ai-intelligence';
-import { Astra } from '@/components/custom/astra';
+import { AstraOverlay } from '@/components/custom/astra-overlay';
 import { LiveDigitStream } from '@/components/custom/live-digit-stream';
 import { TransitionMatrix } from '@/components/custom/transition-matrix';
 import { TradeStatus } from '@/components/custom/trade-status';
@@ -325,7 +325,7 @@ export function DigitsView({
               </div>
 
               {/* Astral Terminal - Integrated Zones */}
-              <div className="flex flex-col gap-6">
+              <div className="flex flex-col gap-4">
                 {/* Zone 1: Market + Live Stream */}
                 <div className="astral-glass border border-white/10 rounded-xl p-5">
                   <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
@@ -437,22 +437,9 @@ export function DigitsView({
                   </div>
                 )}
 
-                {/* Zone 4: Astra Assistant */}
-                <div className="astral-glass border border-white/10 rounded-xl p-5">
-                  <div className="flex items-center gap-2 mb-4">
-                    <div className="w-5 h-5 rounded bg-gradient-to-br from-neon-purple to-neon-pink flex items-center justify-center text-white font-bold text-xs glow-purple">
-                      🐻
-                    </div>
-                    <span className="text-xs font-bold uppercase tracking-wider text-foreground">
-                      Astra
-                    </span>
-                  </div>
-                  <Astra signal={signal} hasData={hasData} isConnected={isConnected} />
-                </div>
-
-                {/* Zone 5: Transition Matrix */}
-                <div className="astral-glass border border-white/10 rounded-xl p-5">
-                  <div className="flex items-center gap-2 mb-4">
+                {/* Zone 4: Transition Matrix */}
+                <div className="astral-glass border border-white/10 rounded-xl p-4">
+                  <div className="flex items-center gap-2 mb-3">
                     <div className="w-5 h-5 rounded bg-gradient-to-br from-neon-purple to-neon-pink flex items-center justify-center text-white font-bold text-xs glow-purple">
                       🔄
                     </div>
@@ -472,6 +459,9 @@ export function DigitsView({
       <div className="fixed bottom-0 left-0 right-0 py-2 text-center bg-background/80 backdrop-blur-sm">
         <Footer />
       </div>
+
+      {/* Floating Astra Overlay */}
+      <AstraOverlay signal={signal} hasData={hasData} isConnected={isConnected} />
     </main>
   );
 }
