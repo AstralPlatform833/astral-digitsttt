@@ -59,9 +59,9 @@ export function LiveDigitStream({ currentTick, lastDigit, activeSymbol, pipSize,
 
   // Format current tick price
   const formatPrice = (price: number) => {
-    if (!activeSymbol) return price.toFixed(2);
+    if (!activeSymbol) return (price || 0).toFixed(2);
     const decimals = pipSize === 0.01 ? 2 : pipSize === 0.001 ? 3 : pipSize === 0.0001 ? 4 : 2;
-    return price.toFixed(decimals);
+    return (price || 0).toFixed(decimals);
   };
 
   return (

@@ -61,11 +61,11 @@ export function OpenPositionCard({
   contractTypeLabels,
 }: OpenPositionCardProps) {
   const { label: dirLabel } = getDirectionDisplay(pos.contract_type, contractTypeLabels);
-  const profit = parseFloat(pos.profit);
+  const profit = parseFloat(pos.profit || '0');
   const isProfit = profit >= 0;
-  const bidPrice = parseFloat(pos.bid_price);
-  const buyPrice = parseFloat(pos.buy_price);
-  const payout = parseFloat(pos.payout);
+  const bidPrice = parseFloat(pos.bid_price || '0');
+  const buyPrice = parseFloat(pos.buy_price || '0');
+  const payout = parseFloat(pos.payout || '0');
   const { elapsed, progress } = usePositionTimer(pos);
 
   return (

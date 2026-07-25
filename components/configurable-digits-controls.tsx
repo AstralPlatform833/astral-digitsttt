@@ -220,7 +220,7 @@ export function ConfigurableDigitsControls(props: ConfigurableDigitsControlsProp
   useEffect(() => {
     if (buyResult) {
       toast.success('Contract Purchased', {
-        description: `Buy price: ${buyResult.buyPrice.toFixed(2)} USD | Payout: ${buyResult.payout.toFixed(2)} USD | Balance: ${buyResult.balanceAfter.toFixed(2)} USD`,
+        description: `Buy price: ${(buyResult.buyPrice || 0).toFixed(2)} USD | Payout: ${(buyResult.payout || 0).toFixed(2)} USD | Balance: ${(buyResult.balanceAfter || 0).toFixed(2)} USD`,
       });
       onClearBuyResult();
     }
@@ -338,7 +338,7 @@ export function ConfigurableDigitsControls(props: ConfigurableDigitsControlsProp
   // ── Current tick (3 styles) ─────────────────────────────────────────────
   // Real control = CurrentTickDisplay. Same live tick data in every variant.
   const renderTick = () => {
-    const priceStr = currentTick && activeSymbol ? currentTick.quote.toFixed(pipSize) : null;
+    const priceStr = currentTick && activeSymbol ? (currentTick.quote || 0).toFixed(pipSize) : null;
     const priceWithoutLast = priceStr ? priceStr.slice(0, -1) : null;
     const lastDigitStr = priceStr ? priceStr.slice(-1) : null;
 
@@ -690,7 +690,7 @@ export function ConfigurableDigitsControls(props: ConfigurableDigitsControlsProp
         isProposalLoading ? (
           <Skeleton className="h-4 w-24" />
         ) : (
-          <span className="text-sm font-bold text-foreground">{proposal!.payout.toFixed(2)} USD</span>
+          <span className="text-sm font-bold text-foreground">{(proposal?.payout || 0).toFixed(2)} USD</span>
         )
       ) : null;
 
@@ -764,7 +764,7 @@ export function ConfigurableDigitsControls(props: ConfigurableDigitsControlsProp
     const label = isBuying
       ? 'Purchasing...'
       : proposal
-        ? `Buy @ ${proposal.askPrice.toFixed(2)} USD`
+        ? `Buy @ ${(proposal.askPrice || 0).toFixed(2)} USD`
         : 'Buy Contract';
 
     const variants: Record<StyleVariant, () => React.ReactNode> = {

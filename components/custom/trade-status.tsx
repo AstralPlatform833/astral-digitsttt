@@ -32,7 +32,7 @@ export function TradeStatus({ openPositions, isBuying }: TradeStatusProps) {
   }
 
   // Use real profit from the contract
-  const profit = parseFloat(runningContract.profit);
+  const profit = parseFloat(runningContract.profit || '0');
   const isWin = profit > 0;
   const isLoss = profit < 0;
 

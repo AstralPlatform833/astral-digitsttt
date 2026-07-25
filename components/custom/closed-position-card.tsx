@@ -35,9 +35,11 @@ export function ClosedPositionCard({
     pos.contract_type,
     contractTypeLabels
   );
-  const profit = pos.sell_price - pos.buy_price;
+  const buyPrice = pos.buy_price || 0;
+  const sellPrice = pos.sell_price || 0;
+  const profit = sellPrice - buyPrice;
   const isProfit = profit >= 0;
-  const duration = pos.sell_time - pos.purchase_time;
+  const duration = (pos.sell_time || 0) - (pos.purchase_time || 0);
 
   return (
     <div className="rounded-xl border border-border bg-card p-4 space-y-3">
@@ -84,19 +86,19 @@ export function ClosedPositionCard({
         <div>
           <p className="text-xs text-muted-foreground mb-0.5">Sell price:</p>
           <p className="text-base font-bold text-foreground">
-            {pos.sell_price.toFixed(2)}
+            {sellPrice.toFixed(2)}
           </p>
         </div>
         <div>
           <p className="text-xs text-muted-foreground mb-0.5">Stake:</p>
           <p className="text-base font-bold text-foreground">
-            {pos.buy_price.toFixed(2)}
+            {buyPrice.toFixed(2)}
           </p>
         </div>
         <div>
           <p className="text-xs text-muted-foreground mb-0.5">Payout:</p>
           <p className="text-base font-bold text-foreground">
-            {pos.payout.toFixed(2)}
+            {(pos.payout || 0).toFixed(2)}
           </p>
         </div>
       </div>

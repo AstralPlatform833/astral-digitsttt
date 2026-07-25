@@ -171,7 +171,7 @@ function OpenPositionRow({
   onSell: (contractId: number, bidPrice: string) => Promise<void>;
   contractTypeLabels: Record<string, string>;
 }) {
-  const profit = parseFloat(pos.profit);
+  const profit = parseFloat(pos.profit || '0');
   const isProfit = profit >= 0;
 
   return (
@@ -181,12 +181,12 @@ function OpenPositionRow({
       </TableCell>
       <TableCell className="text-muted-foreground">{getSymbolDisplayName(pos.underlying_symbol)}</TableCell>
       <TableCell className="text-right">
-        {parseFloat(pos.buy_price).toFixed(2)} {pos.currency}
+        {parseFloat(pos.buy_price || '0').toFixed(2)} {pos.currency}
       </TableCell>
       <TableCell className="text-right">
-        {parseFloat(pos.bid_price).toFixed(2)} {pos.currency}
+        {parseFloat(pos.bid_price || '0').toFixed(2)} {pos.currency}
       </TableCell>
-      <ProfitCell profit={profit} profitPct={pos.profit_percentage} currency={pos.currency} isProfit={isProfit} />
+      <ProfitCell profit={profit} profitPct={pos.profit_percentage || 0} currency={pos.currency} isProfit={isProfit} />
       <TableCell className="text-right">
         <Button
           size="sm"
@@ -208,8 +208,10 @@ function ClosedPositionRow({
   pos: ClosedPosition;
   contractTypeLabels: Record<string, string>;
 }) {
-  const profit = pos.sell_price - pos.buy_price;
-  const profitPct = (profit / pos.buy_price) * 100;
+  const buyPrice = pos.buy_price || 0;
+  const sellPrice = pos.sell_price || 0;
+  const profit = sellPrice - buyPrice;
+  const profitPct = buyPrice > 0 ? (profit / buyPrice) * 100 : 0;
   const isProfit = profit >= 0;
 
   return (
@@ -219,10 +221,10 @@ function ClosedPositionRow({
       </TableCell>
       <TableCell className="text-muted-foreground">{getSymbolDisplayName(pos.underlying_symbol)}</TableCell>
       <TableCell className="text-right">
-        {pos.buy_price.toFixed(2)}
+        {buyPrice.toFixed(2)}
       </TableCell>
       <TableCell className="text-right">
-        {pos.sell_price.toFixed(2)}
+        {sellPrice.toFixed(2)}
       </TableCell>
       <ProfitCell profit={profit} profitPct={profitPct} currency="" isProfit={isProfit} />
       <TableCell />

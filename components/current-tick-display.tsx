@@ -24,7 +24,7 @@ export function CurrentTickDisplay({
     );
   }
 
-  const priceStr = tick.quote.toFixed(pipSize);
+  const priceStr = (tick.quote || 0).toFixed(pipSize);
   const priceWithoutLast = priceStr.slice(0, -1);
   const lastDigitStr = priceStr.slice(-1);
 

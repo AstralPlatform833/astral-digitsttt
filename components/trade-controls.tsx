@@ -103,7 +103,7 @@ export function TradeControls({
   useEffect(() => {
     if (buyResult) {
       toast.success('Contract Purchased', {
-        description: `Buy price: ${buyResult.buyPrice.toFixed(2)} USD | Payout: ${buyResult.payout.toFixed(2)} USD | Balance: ${buyResult.balanceAfter.toFixed(2)} USD`,
+        description: `Buy price: ${(buyResult.buyPrice || 0).toFixed(2)} USD | Payout: ${(buyResult.payout || 0).toFixed(2)} USD | Balance: ${(buyResult.balanceAfter || 0).toFixed(2)} USD`,
       });
       onClearBuyResult();
     }
@@ -193,7 +193,7 @@ export function TradeControls({
               <Skeleton className="h-4 w-24" />
             ) : (
               <span className="text-sm font-bold text-neon-green">
-                {proposal!.payout.toFixed(2)} USD
+                {(proposal?.payout || 0).toFixed(2)} USD
               </span>
             )}
           </div>
@@ -210,7 +210,7 @@ export function TradeControls({
           {isBuying
             ? 'Purchasing...'
             : proposal
-              ? `Buy @ ${proposal.askPrice.toFixed(2)} USD`
+              ? `Buy @ ${(proposal.askPrice || 0).toFixed(2)} USD`
               : 'Buy Contract'}
         </Button>
       </div>
