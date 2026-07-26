@@ -2,6 +2,7 @@
 
 import { useMemo } from 'react';
 import { Ban } from 'lucide-react';
+import { cn } from '@/lib/utils';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Footer } from '@/components/custom/footer';
 import { Header } from '@/components/custom/header';
@@ -40,6 +41,68 @@ const DIGIT_TRADE_TYPE_OPTIONS: { value: TradeType; label: string }[] = [
   { value: 'over-under', label: 'Over/Under' },
   { value: 'even-odd', label: 'Even/Odd' },
 ];
+
+type ZoneAccent = 'cyan' | 'green' | 'purple' | 'pink';
+
+const ZONE_ACCENT: Record<ZoneAccent, string> = {
+  cyan: 'from-neon-cyan to-neon-green glow-cyan',
+  green: 'from-neon-green to-neon-cyan glow-green',
+  purple: 'from-neon-purple to-neon-pink glow-purple',
+  pink: 'from-neon-pink to-neon-purple glow-pink',
+};
+
+/** Consistent zone header: gradient icon badge + uppercase label + optional
+ *  right-aligned meta. Presentation only — no logic. */
+function ZoneHeader({
+  icon,
+  label,
+  accent,
+  right,
+  className,
+}: {
+  icon: string;
+  label: string;
+  accent: ZoneAccent;
+  right?: React.ReactNode;
+  className?: string;
+}) {
+  return (
+    <div className={cn('mb-3 flex items-center justify-between gap-3', className)}>
+      <div className="flex items-center gap-2">
+        <span
+          className={cn(
+            'flex h-5 w-5 items-center justify-center rounded-md bg-gradient-to-br text-[11px] leading-none',
+            ZONE_ACCENT[accent]
+          )}
+          aria-hidden
+        >
+          {icon}
+        </span>
+        <span className="text-[11px] font-bold uppercase tracking-[0.16em] text-foreground/90 text-balance">
+          {label}
+        </span>
+      </div>
+      {right ? <div className="flex shrink-0 items-center">{right}</div> : null}
+    </div>
+  );
+}
+
+/** Live/offline pill for the market zone header. Reads isConnected only. */
+function ConnectionPill({ isConnected }: { isConnected: boolean }) {
+  return (
+    <span className="flex items-center gap-1.5 rounded-full border border-white/10 bg-white/5 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wider">
+      <span
+        className={cn(
+          'h-1.5 w-1.5 rounded-full',
+          isConnected ? 'bg-neon-green animate-pulse glow-green' : 'bg-muted-foreground'
+        )}
+      />
+      <span className={isConnected ? 'text-neon-green' : 'text-muted-foreground'}>
+        {isConnected ? 'Live' : 'Offline'}
+      </span>
+    </span>
+  );
+}
 
 export interface DigitsViewProps {
   // Auth
@@ -327,18 +390,16 @@ export function DigitsView({
               {/* Astral Terminal - Integrated Zones */}
               <div className="flex flex-col gap-3">
                 {/* Zone 1: Market + Live Stream */}
-                <div className="astral-glass border border-white/10 rounded-xl p-3">
-                  <div className="grid grid-cols-1 lg:grid-cols-12 gap-4">
+                <section className="astral-panel rounded-xl p-4">
+                  <ZoneHeader
+                    icon="💹"
+                    label="Market"
+                    accent="cyan"
+                    right={<ConnectionPill isConnected={isConnected} />}
+                  />
+                  <div className="grid grid-cols-1 gap-4 lg:grid-cols-12 lg:items-center">
                     {/* Market Selector */}
                     <div className="lg:col-span-4">
-                      <div className="flex items-center gap-2 mb-2">
-                        <div className="w-4 h-4 rounded bg-gradient-to-br from-neon-cyan to-neon-green flex items-center justify-center text-white font-bold text-[10px] glow-cyan">
-                          💹
-                        </div>
-                        <span className="text-[10px] font-bold uppercase tracking-wider text-foreground">
-                          Market
-                        </span>
-                      </div>
                       <SymbolSelector
                         symbols={symbols}
                         activeSymbol={activeSymbol}
@@ -347,7 +408,10 @@ export function DigitsView({
                     </div>
 
                     {/* Live Stream */}
-                    <div className="lg:col-span-8">
+                    <div className="lg:col-span-8 lg:border-l lg:border-white/5 lg:pl-4">
+                      <p className="mb-2 text-[10px] font-semibold uppercase tracking-[0.16em] text-muted-foreground">
+                        Tick Stream
+                      </p>
                       <LiveDigitStream
                         currentTick={currentTick}
                         lastDigit={lastDigit}
@@ -357,53 +421,42 @@ export function DigitsView({
                       />
                     </div>
                   </div>
-                </div>
+                </section>
 
                 {/* Zone 2: Digit Analysis */}
-                <div className="astral-glass border border-white/10 rounded-xl p-3">
-                  <div className="flex items-center gap-2 mb-2">
-                    <div className="w-4 h-4 rounded bg-gradient-to-br from-neon-green to-neon-cyan flex items-center justify-center text-white font-bold text-[10px] glow-green">
-                      📊
-                    </div>
-                    <span className="text-xs font-bold uppercase tracking-wider text-foreground">
-                      Digit Analysis
-                    </span>
-                  </div>
+                <section className="astral-panel rounded-xl p-4">
+                  <ZoneHeader
+                    icon="📊"
+                    label="Digit Analysis"
+                    accent="green"
+                    right={
+                      <span className="text-[10px] font-medium uppercase tracking-wider text-muted-foreground">
+                        Last {digitStats.totalTicks} ticks
+                      </span>
+                    }
+                  />
+                  <div className="zone-divider mb-3" />
                   <DigitStatsBar
                     digitStats={digitStats}
                     selectedDigit={selectedDigit}
                     onDigitSelect={setSelectedDigit}
                     lastDigit={lastDigit}
                   />
-                </div>
+                </section>
 
-                {/* Zone 3: Astral Signal + Trading */}
+                {/* Zone 3: Astral Signal + Trading — primary action zone */}
                 {authState === 'authenticated' && (
-                  <div className="astral-glass border border-white/10 rounded-xl p-3">
-                    <div className="grid grid-cols-1 lg:grid-cols-12 gap-4">
+                  <section className="astral-panel astral-panel-primary rounded-xl p-4">
+                    <div className="grid grid-cols-1 gap-5 lg:grid-cols-12">
                       {/* Astral Signal */}
                       <div className="lg:col-span-4">
-                        <div className="flex items-center gap-2 mb-2">
-                          <div className="w-4 h-4 rounded bg-gradient-to-br from-neon-purple to-neon-pink flex items-center justify-center text-white font-bold text-[10px] glow-purple">
-                            🤖
-                          </div>
-                          <span className="text-[10px] font-bold uppercase tracking-wider text-foreground">
-                            Astral Signal
-                          </span>
-                        </div>
+                        <ZoneHeader icon="🤖" label="Astral Signal" accent="purple" />
                         <AISignal signal={signal} hasData={hasData} isConnected={isConnected} />
                       </div>
 
                       {/* Trading Controls */}
-                      <div className="lg:col-span-8">
-                        <div className="flex items-center gap-2 mb-2">
-                          <div className="w-4 h-4 rounded bg-gradient-to-br from-neon-green to-neon-cyan flex items-center justify-center text-white font-bold text-[10px] glow-green">
-                            ⚡
-                          </div>
-                          <span className="text-[10px] font-bold uppercase tracking-wider text-foreground">
-                            Trading
-                          </span>
-                        </div>
+                      <div className="lg:col-span-8 lg:border-l lg:border-white/5 lg:pl-5">
+                        <ZoneHeader icon="⚡" label="Trading" accent="green" />
                         <TradeControls
                           tradeType={tradeType}
                           contractMode={contractMode}
@@ -426,21 +479,24 @@ export function DigitsView({
                         />
                       </div>
                     </div>
-                  </div>
+                  </section>
                 )}
 
                 {/* Zone 4: Transition Matrix */}
-                <div className="astral-glass border border-white/10 rounded-xl p-4">
-                  <div className="flex items-center gap-2 mb-3">
-                    <div className="w-5 h-5 rounded bg-gradient-to-br from-neon-purple to-neon-pink flex items-center justify-center text-white font-bold text-xs glow-purple">
-                      🔄
-                    </div>
-                    <span className="text-xs font-bold uppercase tracking-wider text-foreground">
-                      Transition Matrix
-                    </span>
-                  </div>
+                <section className="astral-panel rounded-xl p-4">
+                  <ZoneHeader
+                    icon="🔄"
+                    label="Transition Matrix"
+                    accent="purple"
+                    right={
+                      <span className="text-[10px] font-medium uppercase tracking-wider text-muted-foreground">
+                        Next-digit probability
+                      </span>
+                    }
+                  />
+                  <div className="zone-divider mb-3" />
                   <TransitionMatrix digitStats={digitStats} prices={prices} pipSize={pipSize} />
-                </div>
+                </section>
               </div>
             </>
           )}

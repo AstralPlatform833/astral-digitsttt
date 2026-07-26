@@ -21,19 +21,23 @@ export function AISignal({ signal, hasData, isConnected = false }: AISignalProps
   return (
     <div className="space-y-3">
       {/* Main Signal - Dominant */}
-      <div className="text-center py-2">
-        <p className="text-xl font-bold text-white mb-1">
+      <div className="rounded-lg border border-white/10 bg-white/[0.03] px-3 py-3 text-center">
+        <p className="mb-1 text-lg font-bold text-balance text-white">
           {signal.signal}
         </p>
-        <div className="flex items-center justify-center gap-2">
-          <p className="text-2xl font-bold text-[#00FF88]">
+        <div className="flex items-baseline justify-center gap-2">
+          <p className="text-3xl font-bold tabular-nums text-neon-green">
             {hasData ? `${signal.confidence.toFixed(0)}%` : '--'}
           </p>
-          <p className={`text-[10px] font-semibold uppercase tracking-wider ${
-            signal.isValid ? 'text-[#00FF88]' : 'text-muted-foreground'
-          }`}>
+          <span
+            className={`rounded-full px-2 py-0.5 text-[9px] font-semibold uppercase tracking-wider ${
+              signal.isValid
+                ? 'bg-neon-green/15 text-neon-green'
+                : 'bg-white/5 text-muted-foreground'
+            }`}
+          >
             {signal.isValid ? 'Qualified' : 'Waiting'}
-          </p>
+          </span>
         </div>
       </div>
 
@@ -45,7 +49,7 @@ export function AISignal({ signal, hasData, isConnected = false }: AISignalProps
               <div
                 key={i}
                 className={`h-1.5 flex-1 rounded-sm transition-all ${
-                  filled ? 'bg-[#00FF88]' : 'bg-white/10'
+                  filled ? 'bg-neon-green' : 'bg-white/10'
                 }`}
               />
             ))}
