@@ -16,7 +16,8 @@ import { TradeTypeChips } from '@/components/custom/trade-type-chips';
 import { SymbolSelector } from '@/components/custom/symbol-selector';
 import { ThemeToggle } from '@/components/custom/theme-toggle';
 import { AISignal } from '@/components/custom/ai-intelligence';
-import { AstraOverlay } from '@/components/custom/astra-overlay';
+import { AstraPanel } from '@/components/custom/astra-panel';
+import { MarketHealth } from '@/components/custom/market-health';
 import { LiveDigitStream } from '@/components/custom/live-digit-stream';
 import { TransitionMatrix } from '@/components/custom/transition-matrix';
 import { TradeStatus } from '@/components/custom/trade-status';
@@ -34,7 +35,6 @@ import type { ContractMode, TradeType, DigitStats } from '../lib/types';
 import type { OpenPosition } from '@/hooks/use-open-positions';
 import type { ClosedPosition } from '@/hooks/use-closed-positions';
 import type { DigitsAppConfig } from '../lib/app-config';
-import { PositionsTable } from './custom/positions-table';
 
 const DIGIT_TRADE_TYPE_OPTIONS: { value: TradeType; label: string }[] = [
   { value: 'matches-differs', label: 'Matches/Differs' },
@@ -101,6 +101,38 @@ function ConnectionPill({ isConnected }: { isConnected: boolean }) {
         {isConnected ? 'Live' : 'Offline'}
       </span>
     </span>
+  );
+}
+
+/** Small right-aligned badge summarizing signal strength. Reads signal only. */
+function SignalBadge({ hasData, isValid, confidence }: { hasData: boolean; isValid: boolean; confidence: number }) {
+  const state = !hasData
+    ? { label: 'Scanning', cls: 'bg-white/5 text-muted-foreground' }
+    : isValid && confidence >= 80
+      ? { label: 'Strong', cls: 'bg-neon-green/15 text-neon-green' }
+      : isValid
+        ? { label: 'Moderate', cls: 'bg-neon-cyan/15 text-neon-cyan' }
+        : { label: 'Waiting', cls: 'bg-white/5 text-muted-foreground' };
+  return (
+    <span className={cn('rounded-full px-2 py-0.5 text-[9px] font-bold uppercase tracking-wider', state.cls)}>
+      {state.label}
+    </span>
+  );
+}
+
+/** Placeholder shown inside the Signal/Trading zones when signed out, so the
+ *  terminal grid stays balanced and offers a clear call to action. */
+function LockedZone({ message, onAction }: { message: string; onAction: () => void }) {
+  return (
+    <div className="flex flex-col items-center justify-center gap-3 rounded-lg border border-dashed border-white/10 bg-white/[0.02] px-4 py-8 text-center">
+      <p className="text-xs text-balance text-muted-foreground">{message}</p>
+      <button
+        onClick={onAction}
+        className="rounded-lg bg-gradient-to-r from-neon-cyan to-neon-green px-4 py-1.5 text-xs font-bold text-black astral-transition hover:from-neon-cyan/80 hover:to-neon-green/80 glow-cyan"
+      >
+        Log in
+      </button>
+    </div>
   );
 }
 
@@ -378,53 +410,83 @@ export function DigitsView({
             </div>
           ) : (
             <>
-              {/* Trade type chips */}
-              <div className="shrink-0 overflow-x-auto pb-0.5 [-webkit-overflow-scrolling:touch] [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden">
-                <TradeTypeChips
-                  value={tradeType}
-                  options={DIGIT_TRADE_TYPE_OPTIONS}
-                  onValueChange={setTradeType}
-                />
+              {/* Toolbar: market selector + connection + trade-type mode */}
+              <div className="flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between">
+                <div className="flex items-center gap-3">
+                  <div className="w-full sm:w-72">
+                    <SymbolSelector
+                      symbols={symbols}
+                      activeSymbol={activeSymbol}
+                      onSymbolChange={selectSymbol}
+                      prices={prices}
+                      pipSize={pipSize}
+                    />
+                  </div>
+                  <ConnectionPill isConnected={isConnected} />
+                </div>
+                <div className="overflow-x-auto pb-0.5 [-webkit-overflow-scrolling:touch] [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden">
+                  <TradeTypeChips
+                    value={tradeType}
+                    options={DIGIT_TRADE_TYPE_OPTIONS}
+                    onValueChange={setTradeType}
+                  />
+                </div>
               </div>
 
-              {/* Astral Terminal - Integrated Zones */}
-              <div className="flex flex-col gap-3">
-                {/* Zone 1: Market + Live Stream */}
-                <section className="astral-panel rounded-xl p-4">
+              {/* Astral Terminal — dense multi-panel grid */}
+              <div className="grid grid-cols-1 gap-3 md:grid-cols-2 lg:grid-cols-12">
+                {/* Live Stream */}
+                <section className="astral-panel rounded-xl p-4 md:col-span-2 lg:col-span-4">
                   <ZoneHeader
                     icon="💹"
-                    label="Market"
+                    label="Live Stream"
                     accent="cyan"
-                    right={<ConnectionPill isConnected={isConnected} />}
+                    right={
+                      <span className="text-[10px] font-medium uppercase tracking-wider text-muted-foreground">
+                        {Math.min(prices.length, 15)} digits
+                      </span>
+                    }
                   />
-                  <div className="grid grid-cols-1 gap-4 lg:grid-cols-12 lg:items-center">
-                    {/* Market Selector */}
-                    <div className="lg:col-span-4">
-                      <SymbolSelector
-                        symbols={symbols}
-                        activeSymbol={activeSymbol}
-                        onSymbolChange={selectSymbol}
-                      />
-                    </div>
-
-                    {/* Live Stream */}
-                    <div className="lg:col-span-8 lg:border-l lg:border-white/5 lg:pl-4">
-                      <p className="mb-2 text-[10px] font-semibold uppercase tracking-[0.16em] text-muted-foreground">
-                        Tick Stream
-                      </p>
-                      <LiveDigitStream
-                        currentTick={currentTick}
-                        lastDigit={lastDigit}
-                        activeSymbol={activeSymbol}
-                        pipSize={pipSize}
-                        prices={prices}
-                      />
-                    </div>
-                  </div>
+                  <div className="zone-divider mb-3" />
+                  <LiveDigitStream
+                    currentTick={currentTick}
+                    lastDigit={lastDigit}
+                    activeSymbol={activeSymbol}
+                    pipSize={pipSize}
+                    prices={prices}
+                  />
                 </section>
 
-                {/* Zone 2: Digit Analysis */}
-                <section className="astral-panel rounded-xl p-4">
+                {/* Astral Signal — primary */}
+                <section className="astral-panel astral-panel-primary rounded-xl p-4 md:col-span-2 lg:col-span-5">
+                  <ZoneHeader
+                    icon="🤖"
+                    label="Astral Signal"
+                    accent="purple"
+                    right={
+                      <SignalBadge
+                        hasData={hasData}
+                        isValid={signal.isValid}
+                        confidence={signal.confidence}
+                      />
+                    }
+                  />
+                  {authState === 'authenticated' ? (
+                    <AISignal signal={signal} hasData={hasData} isConnected={isConnected} />
+                  ) : (
+                    <LockedZone message="Sign in to view live Astra signals and confidence." onAction={onLogin} />
+                  )}
+                </section>
+
+                {/* Market Health */}
+                <section className="astral-panel rounded-xl p-4 md:col-span-2 lg:col-span-3">
+                  <ZoneHeader icon="❤️" label="Market Health" accent="green" />
+                  <div className="zone-divider mb-3" />
+                  <MarketHealth digitStats={digitStats} prices={prices} pipSize={pipSize} />
+                </section>
+
+                {/* Digit Analysis */}
+                <section className="astral-panel rounded-xl p-4 md:col-span-2 lg:col-span-4">
                   <ZoneHeader
                     icon="📊"
                     label="Digit Analysis"
@@ -444,46 +506,37 @@ export function DigitsView({
                   />
                 </section>
 
-                {/* Zone 3: Astral Signal + Trading — primary action zone */}
-                {authState === 'authenticated' && (
-                  <section className="astral-panel astral-panel-primary rounded-xl p-4">
-                    <div className="grid grid-cols-1 gap-5 lg:grid-cols-12">
-                      {/* Astral Signal */}
-                      <div className="lg:col-span-4">
-                        <ZoneHeader icon="🤖" label="Astral Signal" accent="purple" />
-                        <AISignal signal={signal} hasData={hasData} isConnected={isConnected} />
-                      </div>
+                {/* Trading — primary */}
+                <section className="astral-panel astral-panel-primary rounded-xl p-4 md:col-span-2 lg:col-span-4">
+                  <ZoneHeader icon="⚡" label="Trading Console" accent="green" />
+                  {authState === 'authenticated' ? (
+                    <TradeControls
+                      tradeType={tradeType}
+                      contractMode={contractMode}
+                      onContractModeChange={setContractMode}
+                      selectedDigit={selectedDigit}
+                      isConnected={isConnected}
+                      stake={stake}
+                      onStakeChange={setStake}
+                      duration={duration}
+                      onDurationChange={setDuration}
+                      durationLimits={durationLimits}
+                      proposal={proposal}
+                      isProposalLoading={isProposalLoading}
+                      onBuy={buyContract}
+                      isBuying={isBuying}
+                      buyResult={buyResult}
+                      buyError={buyError}
+                      onClearBuyResult={clearBuyResult}
+                      isAuthenticated={authState === 'authenticated'}
+                    />
+                  ) : (
+                    <LockedZone message="Sign in to place trades on your Deriv account." onAction={onLogin} />
+                  )}
+                </section>
 
-                      {/* Trading Controls */}
-                      <div className="lg:col-span-8 lg:border-l lg:border-white/5 lg:pl-5">
-                        <ZoneHeader icon="⚡" label="Trading" accent="green" />
-                        <TradeControls
-                          tradeType={tradeType}
-                          contractMode={contractMode}
-                          onContractModeChange={setContractMode}
-                          selectedDigit={selectedDigit}
-                          isConnected={isConnected}
-                          stake={stake}
-                          onStakeChange={setStake}
-                          duration={duration}
-                          onDurationChange={setDuration}
-                          durationLimits={durationLimits}
-                          proposal={proposal}
-                          isProposalLoading={isProposalLoading}
-                          onBuy={buyContract}
-                          isBuying={isBuying}
-                          buyResult={buyResult}
-                          buyError={buyError}
-                          onClearBuyResult={clearBuyResult}
-                          isAuthenticated={authState === 'authenticated'}
-                        />
-                      </div>
-                    </div>
-                  </section>
-                )}
-
-                {/* Zone 4: Transition Matrix */}
-                <section className="astral-panel rounded-xl p-4">
+                {/* Transition Matrix */}
+                <section className="astral-panel rounded-xl p-4 md:col-span-2 lg:col-span-4">
                   <ZoneHeader
                     icon="🔄"
                     label="Transition Matrix"
@@ -498,6 +551,9 @@ export function DigitsView({
                   <TransitionMatrix digitStats={digitStats} prices={prices} pipSize={pipSize} />
                 </section>
               </div>
+
+              {/* Astra — integrated companion */}
+              <AstraPanel signal={signal} hasData={hasData} isConnected={isConnected} />
             </>
           )}
         </div>
@@ -507,9 +563,6 @@ export function DigitsView({
       <div className="fixed bottom-0 left-0 right-0 py-2 text-center bg-background/80 backdrop-blur-sm">
         <Footer />
       </div>
-
-      {/* Floating Astra Overlay */}
-      <AstraOverlay signal={signal} hasData={hasData} isConnected={isConnected} />
     </main>
   );
 }
