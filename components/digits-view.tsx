@@ -457,26 +457,24 @@ export function DigitsView({
                   />
                 </section>
 
-                {/* Astral Signal — primary */}
-                <section className="astral-panel astral-panel-primary rounded-xl p-4 md:col-span-2 lg:col-span-5">
-                  <ZoneHeader
-                    icon="🤖"
-                    label="Astral Signal"
-                    accent="purple"
-                    right={
-                      <SignalBadge
-                        hasData={hasData}
-                        isValid={signal.isValid}
-                        confidence={signal.confidence}
-                      />
-                    }
-                  />
-                  {authState === 'authenticated' ? (
+                {/* Astral Signal — primary (authenticated only, as in original) */}
+                {authState === 'authenticated' && (
+                  <section className="astral-panel astral-panel-primary rounded-xl p-4 md:col-span-2 lg:col-span-5">
+                    <ZoneHeader
+                      icon="🤖"
+                      label="Astral Signal"
+                      accent="purple"
+                      right={
+                        <SignalBadge
+                          hasData={hasData}
+                          isValid={signal.isValid}
+                          confidence={signal.confidence}
+                        />
+                      }
+                    />
                     <AISignal signal={signal} hasData={hasData} isConnected={isConnected} />
-                  ) : (
-                    <LockedZone message="Sign in to view live Astra signals and confidence." onAction={onLogin} />
-                  )}
-                </section>
+                  </section>
+                )}
 
                 {/* Market Health */}
                 <section className="astral-panel rounded-xl p-4 md:col-span-2 lg:col-span-3">
@@ -506,10 +504,10 @@ export function DigitsView({
                   />
                 </section>
 
-                {/* Trading — primary */}
-                <section className="astral-panel astral-panel-primary rounded-xl p-4 md:col-span-2 lg:col-span-4">
-                  <ZoneHeader icon="⚡" label="Trading Console" accent="green" />
-                  {authState === 'authenticated' ? (
+                {/* Trading — primary (authenticated only, as in original) */}
+                {authState === 'authenticated' && (
+                  <section className="astral-panel astral-panel-primary rounded-xl p-4 md:col-span-2 lg:col-span-4">
+                    <ZoneHeader icon="⚡" label="Trading Console" accent="green" />
                     <TradeControls
                       tradeType={tradeType}
                       contractMode={contractMode}
@@ -530,10 +528,8 @@ export function DigitsView({
                       onClearBuyResult={clearBuyResult}
                       isAuthenticated={authState === 'authenticated'}
                     />
-                  ) : (
-                    <LockedZone message="Sign in to place trades on your Deriv account." onAction={onLogin} />
-                  )}
-                </section>
+                  </section>
+                )}
 
                 {/* Transition Matrix */}
                 <section className="astral-panel rounded-xl p-4 md:col-span-2 lg:col-span-4">
